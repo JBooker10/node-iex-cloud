@@ -1,5 +1,5 @@
 {
-  "name": "iex-cloud",
+  "name": "node-iex-cloud",
   "version": "1.0.0",
   "description": "SDK for iex cloud",
   "main": "index.js",

@@ -1,20 +1,22 @@
-const IEXCloud = require("../lib/app").IEXCloud;
+const IEX = require("../lib/index").IEXCloudClient;
 
 const fetch = require("node-fetch");
 require("dotenv").config();
 
-const iex = new IEXCloud(fetch, {
+const iex = new IEX(fetch, {
   sandbox: true,
   publishable: process.env.PUBLISHABLE,
   version: "stable"
 });
 
-iex
-  .market()
-  .collection({ param: "sector", collectionName: "mostactive" })
-  .then(res => console.log(res));
+// iex
+//   .symbol("googl")
+//   .batch("company", "balance-sheet", "cash-flow", "estimates")
+//   .then(res => console.log(res));
 
 // iex
 //   .symbol("GOOGL")
-//   .deep("book")
+//   .ceoCompensation()
 //   .then(res => console.log(res));
+
+return iex.market("today-earnings").then(res => console.log(res));

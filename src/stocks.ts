@@ -14,7 +14,7 @@ interface Configuration {
   version?: Version;
 }
 
-export default class IEXCloud {
+export default class IEXCloudClient {
   private fetchFunc: typeof fetch;
   private publishable: string;
   private sandbox: boolean;
@@ -45,9 +45,9 @@ export default class IEXCloud {
     return this.request(`${params}/${date}`);
   };
 
-  public market = (): IEXCloud => {
-    this.stockSymbol = "market";
-    return this;
+  public market = (params = ""): Promise<any> => {
+    this.datatype = `stock/market`;
+    return this.request(params);
   };
 
   public collection = ({ param, collectionName }: any) => {
@@ -64,7 +64,7 @@ export default class IEXCloud {
     return this.request(params);
   };
 
-  public symbol = (symbol: string): IEXCloud => {
+  public symbol = (symbol: string): IEXCloudClient => {
     this.stockSymbol = symbol;
     return this;
   };
@@ -82,13 +82,13 @@ export default class IEXCloud {
     const request = `${url}/${
       this.stockSymbol
     }/${params}${q}token=${this.setToken(this.publishable)}`;
-    console.log(request);
 
     if (this.datatype === "deep") {
       const request = `${url}/${params}?symbols=${
         this.stockSymbol
       }&token=${this.setToken(this.publishable)}`;
       console.log(request);
+      this.datatype = "stock";
       return request;
     }
 
@@ -99,18 +99,22 @@ export default class IEXCloud {
       return request;
     }
 
-    if (this.stockSymbol === "market") {
+    if (this.datatype === "stock/market") {
       const request = `${url}/${params}${q}token=${this.setToken(
         this.publishable
       )}`;
+      console.log(request);
+      this.datatype = "stock";
       return request;
     }
 
+    console.log(request);
     return request;
   };
 
-  private batchParams = (...types: any[]): string => {
+  private batchParams = (...types: any): string => {
     const env = this.sandbox ? "sandbox" : "cloud";
+
     const request = `https://${env}.iexapis.com/${this.version}/${
       this.datatype
     }/${this.stockSymbol}/batch?types=${types.map(
@@ -124,23 +128,31 @@ export default class IEXCloud {
     try {
       const res = await this.fetchFunc(this.params(params));
       const contentType = res.headers.get("content-type");
+
       if (contentType === "application/json; charset=utf-8") {
         return await res.json();
       }
+
+      if (res.status >= 400) {
+        throw new Error(await res.text());
+      }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
-  public batch = async (...params: []) => {
+  public batch = async (...params: any[]) => {
     try {
-      const res = await this.fetchFunc(this.batchParams("stock", params));
+      const res = await this.fetchFunc(this.batchParams(params));
       const contentType = res.headers.get("content-type");
       if (contentType === "application/json; charset=utf-8") {
         return await res.json();
       }
+      if (res.status >= 400) {
+        throw new Error(await res.text());
+      }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
