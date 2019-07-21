@@ -1,6 +1,10 @@
 import IEXCloud from "./../src/stocks";
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 require("dotenv").config();
+// import * as dotenv from "dotenv";
+
+// console.log(dotenv);
+// dotenv.config();
 
 const iex = new IEXCloud(fetch, {
   sandbox: true,

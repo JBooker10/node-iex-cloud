@@ -1,4 +1,10 @@
-import { Company, CeoCompensation, DelayedQuote, Dividends } from "./vendor";
+import {
+  Company,
+  CeoCompensation,
+  DelayedQuote,
+  Dividends,
+  Earnings
+} from "./vendor";
 
 type Version = "beta" | "stable" | "v1" | string;
 
@@ -127,7 +133,7 @@ export default class IEXCloud {
     return this.request(`dividends/${range}`);
   };
 
-  public earnings = ({ last = 1, field = "" }: any): Promise<any> => {
+  public earnings = ({ last = 1, field = "" }: any): Promise<Earnings> => {
     return this.request(`earnings/${last}/${field}`);
   };
 
