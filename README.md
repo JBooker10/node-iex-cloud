@@ -13,7 +13,7 @@ import IEX from "node-iex-cloud";
 ## Configuration and Setup
 
 IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limit or overages.
-(Note: when enabling sandbox to `true`, the publishable key token is automatically prefixed with the letter `T` and doesn't require editing the existing token to access Test Data )
+(Note: when enabling sandbox to `true`, the publishable key token is automatically prefixed with the letter `T` and doesn't require changing the existing token to access Test Data )
 
 ```javascript
 const iex = new IEX(fetch, {
@@ -45,6 +45,43 @@ iex
   .then(res => console.log(res));
 ```
 
+### Available Methods
+
+- `balanceSheet`
+- `book`
+- `chart(range, date)`
+- `cashFlow(period?: string, last?: number)`
+- `ceoCompensation`
+- `company`
+- `delayedQuote`
+- `dividends(range)`
+- `earnings(last, field)
+- `estimates`
+- `financials(period)`
+- `news(last)`
+- `fundOwnership`
+- `income`
+- `insiderRoster`
+- `insiderSummary`
+- `insiderTransactions`
+- `institutionalOwnership`
+- `intradayPrices`
+- `logo`
+- `largestTrades`
+- `options`
+- `peers`
+- `previous`
+- `price`
+- `priceTarget`
+- `ohlc`
+- `sentiment(type, date)`
+- `quote`
+- `recommendationTrends`
+- `stats(stat)`
+- `splits(range)`
+- `shortInterest(date)`
+- `volumeByVenue(date)
+
 ### Market
 
 ```javascript
@@ -52,7 +89,17 @@ iex
 iex.market("today-earnings").then(res => console.log(res));
 ```
 
-### Batching
+### Data Points
+
+```javascript
+// data-points/aapl/quote-latestprice
+iex
+  .symbol("aapl")
+  .dataPoints("quote-latestprice")
+  .then(res => console.log(res));
+```
+
+### Batch
 
 Use the method `batch` to batch Request of multiple data types, all IEX types are supported. IEX allows only up to `10` types to be made per request.
 
@@ -62,6 +109,13 @@ iex
   .symbol("googl")
   .batch("company", "balance-sheet", "cash-flow", "estimates")
   .then(res => console.log(res));
+```
+
+### Tops
+
+```javascript
+// tops/last?symbols=aapl,googl,amzn
+iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
 ```
 
 ### Historical Stats

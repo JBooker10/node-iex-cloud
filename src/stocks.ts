@@ -40,6 +40,11 @@ export default class IEXCloudClient {
     return this.request(key);
   };
 
+  public tops = (...params: any) => {
+    this.datatype = "tops/last";
+    return this.request(`?symbols=${params}`);
+  };
+
   public historicalStats = (params = "", date = "") => {
     this.datatype = "stats";
     return this.request(`${params}/${date}`);
@@ -99,7 +104,7 @@ export default class IEXCloudClient {
       return request;
     }
 
-    if (this.datatype === "stock/market") {
+    if (this.datatype === "stock/market" || "tops") {
       const request = `${url}/${params}${q}token=${this.setToken(
         this.publishable
       )}`;
@@ -164,11 +169,11 @@ export default class IEXCloudClient {
     return this.request("book");
   };
 
-  public chart = (range = "3m", date = ""): Promise<any> => {
+  public chart = (range = "3m", { date = "" }): Promise<any> => {
     return this.request(`chart/${range}/${date}`);
   };
 
-  public cashFlow = (period = "quarter", last = 1): Promise<any> => {
+  public cashFlow = (period = "quarter", { last = 1 }): Promise<any> => {
     return this.request(`cash-flow?period=${period}&last=${last}`);
   };
 
@@ -188,7 +193,7 @@ export default class IEXCloudClient {
     return this.request(`dividends/${range}`);
   };
 
-  public earnings = ({ last = 1, field = "" }: any): Promise<Earnings> => {
+  public earnings = (last = 1, { field = "" }): Promise<Earnings> => {
     return this.request(`earnings/${last}/${field}`);
   };
 
@@ -264,7 +269,7 @@ export default class IEXCloudClient {
     return this.request("ohlc");
   };
 
-  public sentiment = ({ type = "daily", date = "" }): Promise<any> => {
+  public sentiment = (type = "daily", { date = "" }): Promise<any> => {
     return this.request(`sentiment/${type}/${date}`);
   };
 
