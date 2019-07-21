@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@types/dotenv": "^6.1.1",
+    "@types/node-fetch": "^2.3.7",
     "es6-promise": "^4.2.8"
   },
   "files": [

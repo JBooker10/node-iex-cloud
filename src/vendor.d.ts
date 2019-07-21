@@ -87,3 +87,5 @@ export interface Earnings {
   /** Represents the percent difference between the quarter a year ago actualEPS and current period actualEPS. */
   yearAgoChangePercent: number;
 }
+
+export interface CashFlow {}
