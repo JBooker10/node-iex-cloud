@@ -25,6 +25,8 @@ The first method takes in a company symbol (an abbreviation used to uniquely ide
 
 `/stock/google/financials?period=annual`
 
+### Stocks
+
 ```javascript
 iex
   .symbol("googl")

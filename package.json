@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --config jestconfig.json",
+    "prepublishOnly": "npm test && npm run lint",
     "prepare": "npm run build",
     "build": "tsc"
   },

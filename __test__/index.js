@@ -1,4 +1,3 @@
-const Client = require("../lib/app").IEXCloudClient;
 const IEXCloud = require("../lib/app").IEXCloud;
 
 const fetch = require("node-fetch");
