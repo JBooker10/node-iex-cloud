@@ -11,6 +11,11 @@ const iex = new IEXCloud(fetch, {
 });
 
 iex
-  .symbol("GOOGL")
-  .dividends()
+  .market()
+  .collection({ param: "sector", collectionName: "mostactive" })
   .then(res => console.log(res));
+
+// iex
+//   .symbol("GOOGL")
+//   .deep("book")
+//   .then(res => console.log(res));

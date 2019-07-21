@@ -6,10 +6,10 @@
 npm i node-iex-cloud
 ```
 
-### Configuration
+## Configuration and Setup
 
-API endpoints defaults to production, to enable sandbox set property equal to true
-(Note: when enabling sandbox to `true` the publishable key token is automatically prefixed with the letter `T` and doesn't require editing the existing token)
+IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limit or overages.
+(Note: when enabling sandbox to `true`, the publishable key token is automatically prefixed with the letter `T` and doesn't require editing the existing token to access Test Data )
 
 ```javascript
 const iex = new IEXCloudClient(fetch, {
@@ -21,14 +21,29 @@ const iex = new IEXCloudClient(fetch, {
 
 ## Examples
 
-The first method takes in Company symbol. The subequent method retreive the specfic IEX data.
+The first method takes in a company symbol (an abbreviation used to uniquely identify publicly traded shares). The subequent method retreive the specfic IEX data type.
 
-`/stock/googl/financials`
-`/stock/aapl/financials?period=annual`
+`/stock/google/financials?period=annual`
 
 ```javascript
 iex
   .symbol("googl")
   .financials("quarterly")
   .then(res => console.log(res));
+```
+
+`/stock/googl/ceo-compensation`
+
+```javascript
+iex
+  .symbol("googl")
+  .ceoCompensation()
+  .then(res => console.log(res));
+```
+
+### Historical Stats
+
+```javascript
+// /stats/intraday
+iex.historicalStats("intraday").then(res => console.log(res));
 ```

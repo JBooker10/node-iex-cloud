@@ -4,7 +4,7 @@ import {
   DelayedQuote,
   Dividends,
   Earnings
-} from "./vendor";
+} from "./types";
 
 type Version = "beta" | "stable" | "v1" | string;
 
@@ -40,9 +40,28 @@ export default class IEXCloud {
     return this.request(key);
   };
 
+  public historicalStats = (params = "", date = "") => {
+    this.datatype = "stats";
+    return this.request(`${params}/${date}`);
+  };
+
+  public market = (): IEXCloud => {
+    this.stockSymbol = "market";
+    return this;
+  };
+
+  public collection = ({ param, collectionName }: any) => {
+    return this.request(`collection/${param}?collectionName=${collectionName}`);
+  };
+
   public timeSeries = ({ id, subkey = "" }: any) => {
     this.datatype = `time-series/${id}`;
     return this.request(`${subkey}`);
+  };
+
+  public deep = (params = "") => {
+    this.datatype = "deep";
+    return this.request(params);
   };
 
   public symbol = (symbol: string): IEXCloud => {
@@ -56,13 +75,37 @@ export default class IEXCloud {
 
   private params = (params = ""): string => {
     const env = this.sandbox ? "sandbox" : "cloud";
+    const url = `https://${env}.iexapis.com/${this.version}/${this.datatype}`;
     const operand = params.match(new RegExp("\\?", "g"));
-    const request = `https://${env}.iexapis.com/${this.version}/${
-      this.datatype
-    }/${this.stockSymbol}/${params}${
-      operand && operand[0] === "?" ? "&" : "?"
-    }token=${this.setToken(this.publishable)}`;
+    const q = operand && operand[0] === "?" ? "&" : "?";
+
+    const request = `${url}/${
+      this.stockSymbol
+    }/${params}${q}token=${this.setToken(this.publishable)}`;
     console.log(request);
+
+    if (this.datatype === "deep") {
+      const request = `${url}/${params}?symbols=${
+        this.stockSymbol
+      }&token=${this.setToken(this.publishable)}`;
+      console.log(request);
+      return request;
+    }
+
+    if (this.datatype === "stats") {
+      const request = `${url}/${params}${q}token=${this.setToken(
+        this.publishable
+      )}`;
+      return request;
+    }
+
+    if (this.stockSymbol === "market") {
+      const request = `${url}/${params}${q}token=${this.setToken(
+        this.publishable
+      )}`;
+      return request;
+    }
+
     return request;
   };
 
@@ -227,6 +270,10 @@ export default class IEXCloud {
 
   public splits = (range = "1m"): Promise<any> => {
     return this.request(`splits/${range}`);
+  };
+
+  public shortInterest = (date = ""): Promise<any> => {
+    return this.request(`short-interest/${date}`);
   };
 
   public volumeByVenue = (): Promise<any> => {

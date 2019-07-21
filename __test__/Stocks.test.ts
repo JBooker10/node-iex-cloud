@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const iex = new IEXCloud(fetch, {
   sandbox: true,
-  publishable: process.env.PUBLISHABLE,
+  publishable: "pk_73b4feeccc8e4c6c8de07477a47181a6",
   version: "stable"
 });
 
@@ -33,5 +33,12 @@ test("Fetch Chart data", () => {
   return iex
     .symbol("AAPL")
     .chart()
+    .then(res => expect(res[0]).toHaveProperty("open"));
+});
+
+test("Fetch Chart data", () => {
+  return iex
+    .symbol("AAPL")
+    .deep()
     .then(res => expect(res[0]).toHaveProperty("open"));
 });
