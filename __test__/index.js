@@ -12,5 +12,5 @@ const iex = new IEXCloud(fetch, {
 
 iex
   .symbol("GOOGL")
-  .recommendationTrends()
+  .dividends()
   .then(res => console.log(res));

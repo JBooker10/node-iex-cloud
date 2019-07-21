@@ -1,3 +1,5 @@
+import { Company, CeoCompensation, DelayedQuote, Dividends } from "./vendor";
+
 type Version = "beta" | "stable" | "v1" | string;
 
 interface Configuration {
@@ -109,19 +111,19 @@ export default class IEXCloud {
     return this.request(`cash-flow?period=${period}&last=${last}`);
   };
 
-  public ceoCompensation = (): Promise<any> => {
+  public ceoCompensation = (): Promise<CeoCompensation> => {
     return this.request("ceo-compensation");
   };
 
-  public company = (): Promise<any> => {
-    return this.request("company?");
+  public company = (): Promise<Company> => {
+    return this.request("company");
   };
 
-  public delayedQuote = (): Promise<any> => {
+  public delayedQuote = (): Promise<DelayedQuote> => {
     return this.request("delayed-quote");
   };
 
-  public dividends = (range = "1m"): Promise<any> => {
+  public dividends = (range = "1m"): Promise<Dividends> => {
     return this.request(`dividends/${range}`);
   };
 
