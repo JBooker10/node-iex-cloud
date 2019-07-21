@@ -20,9 +20,12 @@ const iex = new IEXCloudClient(fetch, {
 
 ## Examples
 
+`/stock/googl/financials`
+`/stock/aapl/financials?period=annual`
+
 ```javascript
 iex
   .symbol("googl")
-  .financials()
+  .financials("quarterly")
   .then(res => console.log(res));
 ```
