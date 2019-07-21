@@ -19,4 +19,11 @@ const iex = new IEX(fetch, {
 //   .ceoCompensation()
 //   .then(res => console.log(res));
 
-return iex.market("today-earnings").then(res => console.log(res));
+//  iex.market("today-earnings").then(res => console.log(res));
+
+// iex
+//   .symbol("aapl")
+//   .dataPoints("quote-latestprice")
+//   .then(res => console.log(res));
+
+iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
