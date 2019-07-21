@@ -9,6 +9,7 @@ npm i node-iex-cloud
 ### Configuration
 
 API endpoints defaults to production, to enable sandbox set property equal to true
+(Note: when enabling sandbox to `true` the publishable key token is automatically prefixed with the letter `T` and doesn't require editing the existing token)
 
 ```javascript
 const iex = new IEXCloudClient(fetch, {
@@ -19,6 +20,8 @@ const iex = new IEXCloudClient(fetch, {
 ```
 
 ## Examples
+
+The first method takes in Company symbol. The subequent method retreive the specfic IEX data.
 
 `/stock/googl/financials`
 `/stock/aapl/financials?period=annual`
