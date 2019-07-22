@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "jest --setupFiles dotenv/config --config jestconfig.json ",
-    "prepublishOnly": "npm test && npm run lint",
+    "prepublishOnly": "npm test",
     "prepare": "npm run build",
     "build": "tsc"
   },
