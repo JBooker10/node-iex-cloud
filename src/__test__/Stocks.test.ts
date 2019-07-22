@@ -1,6 +1,6 @@
-import { IEXCloudClient } from "./../src";
+import IEXCloudClient from "../index";
 const fetch = require("node-fetch");
-const config = require("./index");
+const config = require("./example");
 
 const iex = new IEXCloudClient(fetch, config);
 

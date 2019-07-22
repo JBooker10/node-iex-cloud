@@ -7,7 +7,13 @@ npm i node-iex-cloud
 ```
 
 ```javascript
-import IEX from "node-iex-cloud";
+import { IEXCloudClient } from "node-iex-cloud";
+```
+
+or
+
+```javascript
+const { IEXCloudClient } = require("node-iex-cloud");
 ```
 
 ## Configuration and Setup

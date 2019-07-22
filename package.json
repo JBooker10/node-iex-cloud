@@ -1,8 +1,8 @@
 {
   "name": "node-iex-cloud",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "SDK for iex cloud",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "jest --config jestconfig.json ",
     "prepublishOnly": "npm test",
