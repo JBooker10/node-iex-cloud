@@ -1,5 +1,11 @@
 // const IEX = require("../lib/index").IEXCloudClient;
 
+module.exports = {
+  sandbox: true,
+  publishable: process.env.PUBLISHABLE,
+  version: "stable"
+};
+
 // const fetch = require("node-fetch");
 // require("dotenv").config();
 

@@ -1,11 +1,8 @@
 import { IEXCloudClient } from "./../src";
 const fetch = require("node-fetch");
+const config = require("./index");
 
-const iex = new IEXCloudClient(fetch, {
-  sandbox: true,
-  publishable: "pk_73b4feeccc8e4c6c8de07477a47181a6",
-  version: "stable"
-});
+const iex = new IEXCloudClient(fetch, config);
 
 test("Company Data", () => {
   return iex
