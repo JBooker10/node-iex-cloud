@@ -79,7 +79,7 @@ export default class IEXCloudClient {
   };
 
   private params = (params = ""): string => {
-    const env = this.sandbox ? "sandbox-sse" : "cloud";
+    const env = this.sandbox ? "sandbox" : "cloud";
     const url = `https://${env}.iexapis.com/${this.version}/${this.datatype}`;
     const operand = params.match(new RegExp("\\?", "g"));
     const q = operand && operand[0] === "?" ? "&" : "?";
@@ -87,7 +87,6 @@ export default class IEXCloudClient {
     const request = `${url}/${
       this.stockSymbol
     }/${params}${q}token=${this.setToken(this.publishable)}`;
-    console.log(request);
 
     if (this.datatype === "deep") {
       const request = `${url}/${params}?symbols=${
@@ -102,15 +101,17 @@ export default class IEXCloudClient {
       const request = `${url}/${params}${q}token=${this.setToken(
         this.publishable
       )}`;
+      this.datatype = "stock";
       return request;
     }
 
-    if (this.datatype === "tops") {
+    if (this.datatype === "tops" || this.datatype === "stock/market") {
       const request = `${url}/${params}${q}token=${this.setToken(
         this.publishable
       )}`;
-      console.log(request);
+
       this.datatype = "stock";
+      console.log(request);
       return request;
     }
 
@@ -170,7 +171,7 @@ export default class IEXCloudClient {
     return this.request("book");
   };
 
-  public chart = (range = "3m", { date = "" }): Promise<any> => {
+  public chart = (range = "3m", date = ""): Promise<any> => {
     return this.request(`chart/${range}/${date}`);
   };
 

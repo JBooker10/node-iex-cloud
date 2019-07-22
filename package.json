@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "SDK for iex cloud",
   "main": "index.js",
+  "jest": {
+    "setupFiles": [
+      "dotenv/config"
+    ]
+  },
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest --setupFiles dotenv/config --config jestconfig.json ",
     "prepublishOnly": "npm test && npm run lint",
     "prepare": "npm run build",
     "build": "tsc"

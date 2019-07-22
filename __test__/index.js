@@ -1,13 +1,13 @@
-const IEX = require("../lib/index").IEXCloudClient;
+// const IEX = require("../lib/index").IEXCloudClient;
 
-const fetch = require("node-fetch");
-require("dotenv").config();
+// const fetch = require("node-fetch");
+// require("dotenv").config();
 
-const iex = new IEX(fetch, {
-  sandbox: true,
-  publishable: process.env.PUBLISHABLE,
-  version: "stable"
-});
+// const iex = new IEX(fetch, {
+//   sandbox: true,
+//   publishable: process.env.PUBLISHABLE,
+//   version: "stable"
+// });
 
 // iex
 //   .symbol("googl")
@@ -26,4 +26,4 @@ const iex = new IEX(fetch, {
 //   .dataPoints("quote-latestprice")
 //   .then(res => console.log(res));
 
-iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
+// iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
