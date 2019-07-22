@@ -1,4 +1,4 @@
-import IEXCloudClient from "../index";
+import { IEXCloudClient } from "./../lib/index";
 const fetch = require("node-fetch");
 const config = require("./example");
 
