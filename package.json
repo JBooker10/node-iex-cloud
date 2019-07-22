@@ -1,15 +1,10 @@
 {
   "name": "node-iex-cloud",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "SDK for iex cloud",
   "main": "index.js",
-  "jest": {
-    "setupFiles": [
-      "dotenv/config"
-    ]
-  },
   "scripts": {
-    "test": "jest --setupFiles dotenv/config --config jestconfig.json ",
+    "test": "jest --config jestconfig.json ",
     "prepublishOnly": "npm test",
     "prepare": "npm run build",
     "build": "tsc"
