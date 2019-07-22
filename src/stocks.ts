@@ -79,14 +79,15 @@ export default class IEXCloudClient {
   };
 
   private params = (params = ""): string => {
-    const env = this.sandbox ? "sandbox" : "cloud";
+    const env = this.sandbox ? "sandbox-sse" : "cloud";
     const url = `https://${env}.iexapis.com/${this.version}/${this.datatype}`;
     const operand = params.match(new RegExp("\\?", "g"));
     const q = operand && operand[0] === "?" ? "&" : "?";
-
+    console.log(this.stockSymbol);
     const request = `${url}/${
       this.stockSymbol
     }/${params}${q}token=${this.setToken(this.publishable)}`;
+    console.log(request);
 
     if (this.datatype === "deep") {
       const request = `${url}/${params}?symbols=${
@@ -104,7 +105,7 @@ export default class IEXCloudClient {
       return request;
     }
 
-    if (this.datatype === "stock/market" || "tops") {
+    if (this.datatype === "tops") {
       const request = `${url}/${params}${q}token=${this.setToken(
         this.publishable
       )}`;

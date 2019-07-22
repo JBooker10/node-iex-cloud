@@ -1,6 +1,6 @@
 # node-iex-cloud
 
-## Installation
+## Installation and Usage
 
 ```bash
 npm i node-iex-cloud
@@ -55,7 +55,7 @@ iex
 - `company`
 - `delayedQuote`
 - `dividends(range)`
-- `earnings(last, field)
+- `earnings(last, field)`
 - `estimates`
 - `financials(period)`
 - `news(last)`
@@ -80,7 +80,7 @@ iex
 - `stats(stat)`
 - `splits(range)`
 - `shortInterest(date)`
-- `volumeByVenue(date)
+- `volumeByVenue(date)`
 
 ### Market
 
@@ -90,6 +90,8 @@ iex.market("today-earnings").then(res => console.log(res));
 ```
 
 ### Data Points
+
+Data points are available per symbol and return individual plain text values.
 
 ```javascript
 // data-points/aapl/quote-latestprice
@@ -111,20 +113,32 @@ iex
   .then(res => console.log(res));
 ```
 
-### Tops
+### IEX Last
+
+Last provides trade data for executions on IEX.
 
 ```javascript
 // tops/last?symbols=aapl,googl,amzn
 iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
 ```
 
-### Historical Stats
+### IEX Historical Stats
 
 ```javascript
 // stats/intraday
 iex.historicalStats("intraday").then(res => console.log(res));
 ```
 
-### Websockets
+### IEX Deep
 
-Comming soon
+DEEP is used to receive real-time depth of book quotations direct from IEX.
+
+```javascript
+// deep/trading-status?symbols=msft
+iex
+  .symbol("msft")
+  .deep("trading-status")
+  .then(res => console.log(res));
+```
+
+### SSE Server-sent Events Streaming
