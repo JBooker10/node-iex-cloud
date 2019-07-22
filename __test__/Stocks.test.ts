@@ -1,8 +1,6 @@
 import { IEXCloudClient } from "./../src";
 const fetch = require("node-fetch");
 
-require("dotenv").config({ path: "./test.env" });
-
 const iex = new IEXCloudClient(fetch, {
   sandbox: true,
   publishable: "pk_73b4feeccc8e4c6c8de07477a47181a6",
