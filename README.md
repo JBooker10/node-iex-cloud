@@ -10,12 +10,16 @@ ES6+
 
 ```javascript
 import { IEXCloudClient } from "node-iex-cloud";
+// Use a promise-based library for your request
+import fetch from "node-fetch"
 ```
 
 common.js
 
 ```javascript
 const { IEXCloudClient } = require("node-iex-cloud");
+// Use a promise-based library for your request
+const fetch = require("node-fetch")
 ```
 
 ## Configuration and Setup
