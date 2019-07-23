@@ -33,7 +33,7 @@ const iex = new IEX(fetch, {
 
 ## Examples
 
-The first method takes in a company symbol (an abbreviation used to uniquely identify publicly traded shares). The subequent method retreive the specfic IEX data type.
+The first method takes in a company symbol (an abbreviation used to uniquely identify publicly traded shares). The subsequent method retreive the specfic IEX data type.
 
 ### Stocks
 
