@@ -10,16 +10,12 @@ ES6+
 
 ```javascript
 import { IEXCloudClient } from "node-iex-cloud";
-// Use a promise-based library for your request
-import fetch from "node-fetch"
 ```
 
 common.js
 
 ```javascript
 const { IEXCloudClient } = require("node-iex-cloud");
-// Use a promise-based library for your request
-const fetch = require("node-fetch")
 ```
 
 ## Configuration and Setup
@@ -35,9 +31,17 @@ const iex = new IEX(fetch, {
 });
 ```
 
+```javascript
+const iex = new IEX(axios, {
+  sandbox: true,
+  publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
+  version: "stable"
+});
+```
+
 ## Examples
 
-The first method takes in a company symbol (an abbreviation used to uniquely identify publicly traded shares). The subsequent method retreive the specfic IEX data type.
+The first method takes in a company symbol (an abbreviation used to uniquely identify publicly traded shares). The subequent method retreive the specfic IEX data type.
 
 ### Stocks
 
@@ -154,5 +158,9 @@ iex
 ```
 
 ### SSE Streaming
+
+Not Yet Supported
+
+### Web Sockets
 
 Not Yet Supported
