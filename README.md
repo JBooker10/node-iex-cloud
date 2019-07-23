@@ -6,11 +6,13 @@
 npm i node-iex-cloud
 ```
 
+ES6+
+
 ```javascript
 import { IEXCloudClient } from "node-iex-cloud";
 ```
 
-or
+common.js
 
 ```javascript
 const { IEXCloudClient } = require("node-iex-cloud");
@@ -18,7 +20,7 @@ const { IEXCloudClient } = require("node-iex-cloud");
 
 ## Configuration and Setup
 
-IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limit or overages.
+IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages.
 (Note: when enabling sandbox to `true`, the publishable key token is automatically prefixed with the letter `T` and doesn't require changing the existing token to access Test Data )
 
 ```javascript
@@ -149,4 +151,4 @@ iex
 
 ### SSE Streaming
 
-Coming Soon
+Not Yet Supported

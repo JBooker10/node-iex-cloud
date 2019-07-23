@@ -1,6 +1,7 @@
 import { IEXCloudClient } from "./../lib/index";
 const fetch = require("node-fetch");
-const config = require("./example");
+require("dotenv").config();
+const config = require("./config");
 
 const iex = new IEXCloudClient(fetch, config);
 
@@ -23,13 +24,6 @@ test("Balance Sheet Data", () => {
     .symbol("AAPL")
     .balanceSheet()
     .then(res => expect(res).toHaveProperty("balancesheet"));
-});
-
-test("Chart data", () => {
-  return iex
-    .symbol("AAPL")
-    .chart()
-    .then(res => expect(res[0]).toHaveProperty("open"));
 });
 
 test("Deep Data", () => {
@@ -57,6 +51,13 @@ test("Today Earnings Data", () => {
   return iex
     .market("today-earnings")
     .then(res => expect(res).toHaveProperty("amc"));
+});
+
+test("Earnings Data", () => {
+  return iex
+    .symbol("aapl")
+    .earnings(1, { field: "" })
+    .then(res => expect(res).toHaveProperty("earnings"));
 });
 
 test("Upcoming Earnings Data", () => {

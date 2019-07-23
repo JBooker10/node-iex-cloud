@@ -1,35 +1,33 @@
-// const IEX = require("../lib/index").IEXCloudClient;
+const { IEXCloudClient } = require("./../lib");
+const fetch = require("node-fetch");
+require("dotenv").config();
 
-module.exports = {
+const iex = new IEXCloudClient(fetch, {
   sandbox: true,
   publishable: process.env.PUBLISHABLE,
   version: "stable"
-};
-
-// const fetch = require("node-fetch");
-// require("dotenv").config();
-
-// const iex = new IEX(fetch, {
-//   sandbox: true,
-//   publishable: process.env.PUBLISHABLE,
-//   version: "stable"
-// });
+});
 
 // iex
 //   .symbol("googl")
 //   .batch("company", "balance-sheet", "cash-flow", "estimates")
 //   .then(res => console.log(res));
 
-// iex
-//   .symbol("GOOGL")
-//   .ceoCompensation()
-//   .then(res => console.log(res));
-
-//  iex.market("today-earnings").then(res => console.log(res));
-
-// iex
-//   .symbol("aapl")
-//   .dataPoints("quote-latestprice")
-//   .then(res => console.log(res));
-
 // iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
+
+iex.symbol("aapl").estimates.then(res => res);
+
+// iex
+//   .symbol("amzn")
+//   .dividends("3m")
+//   .then(res => console.log(res));
+
+// iex.chart().then(res => console.log(res));
+
+// iex.cashFlow("quarterly", { last: 1 }).then(res => console.log(res));
+
+// iex.ceoCompensation().then(res => console.log(res));
+
+// iex.delayedQuote().then(res => console.log(res));
+
+// iex.earnings(1, { field: "" }).then(res => console.log(res));
