@@ -11,7 +11,7 @@ ES6+
 ```javascript
 import { IEXCloudClient } from "node-iex-cloud";
 // import promise base library
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 ```
 
 common.js
