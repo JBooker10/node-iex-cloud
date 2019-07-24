@@ -10,12 +10,16 @@ ES6+
 
 ```javascript
 import { IEXCloudClient } from "node-iex-cloud";
+// import promise base library
+import fetch from "node-fetch";
 ```
 
 common.js
 
 ```javascript
 const { IEXCloudClient } = require("node-iex-cloud");
+// import promise base library
+const fetch = require("node-fetch");
 ```
 
 ## Configuration and Setup
@@ -24,15 +28,6 @@ IEX Cloud uses a message weighting system to measure usage in message counts, ma
 
 ```javascript
 const iex = new IEX(fetch, {
-  sandbox: true,
-  publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
-  test: "Tpk_21b4ffeccc6e3cnc1df07467a47231c6"
-  version: "stable"
-});
-```
-
-```javascript
-const iex = new IEX(axios, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
   test: "Tpk_21b4ffeccc6e3cnc1df07467a47231c6"
