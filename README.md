@@ -24,7 +24,7 @@ const fetch = require("node-fetch");
 
 ## Configuration and Setup
 
-IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages.
+IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data )
 
 ```javascript
 const iex = new IEX(fetch, {
