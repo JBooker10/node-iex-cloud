@@ -47,21 +47,15 @@ test("Batch Request", () => {
     .then(res => expect(res).toHaveProperty("company.symbol"));
 });
 
-test("Today Earnings Data", () => {
-  return iex
-    .market("today-earnings")
-    .then(res => expect(res).toHaveProperty("amc"));
-});
+// test("Today Earnings Data", () => {
+//   return iex
+//     .market("today-earnings")
+//     .then(res => expect(res).toHaveProperty("amc"));
+// });
 
 test("Earnings Data", () => {
   return iex
     .symbol("aapl")
     .earnings(1, { field: "" })
     .then(res => expect(res).toHaveProperty("earnings"));
-});
-
-test("Upcoming Earnings Data", () => {
-  return iex
-    .market("upcoming-earnings")
-    .then(res => expect(res[0]).toHaveProperty("symbol"));
 });

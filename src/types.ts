@@ -1,3 +1,106 @@
+export interface Configuration {
+  publishable: string;
+  test: string;
+  sandbox?: boolean;
+  version?: Version;
+}
+
+export type Version = "beta" | "stable" | "v1" | string;
+export type Period = "annual" | "quarter";
+export type Last = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type Range =
+  | "max"
+  | "5y"
+  | "2y"
+  | "1y"
+  | "ytd"
+  | "6m"
+  | "3m"
+  | "1m"
+  | "1mm"
+  | "5d"
+  | "5dm"
+  | "date"
+  | "dynamic"
+  | string;
+
+export interface ChartParams {
+  date?: string;
+  chartByDay?: boolean;
+  /**  boolean. Will return adjusted data only with keys date, close, and volume. */
+  chartCloseOnly?: boolean;
+  /** boolean. If true, runs a polyline simplification using the Douglas-Peucker algorithm. This is useful if plotting sparkline charts. */
+  chartSimplify?: boolean;
+  /**  number. If passed, chart data will return every Nth element as defined by chartInterval */
+  chartInterval?: number;
+  /** boolean. If true, changeOverTime and marketChangeOverTime will be relative to previous day close instead of the first value. */
+  changeFromClose?: boolean;
+  /** If passed, chart data will return the last N elements from the time period defined by the range parameter */
+  chartLast?: number;
+  /** 
+    Formatted as YYYYMMDD. This can be used for batch calls when range is 1d or date. */
+  exactDate?: string;
+  range: string;
+}
+
+export interface Book {
+  quote: Quote;
+  bids: any[];
+  asks: any[];
+  trades: Trades[];
+  systemEvents: {
+    systemEvent: string;
+    timestamp: number;
+  };
+}
+
+export interface Trades {
+  price: number;
+  size: number;
+  tradeId: number;
+  isISO: boolean;
+  isOddLot: boolean;
+  isOutsideRegularHours: boolean;
+  isSinglePriceCross: boolean;
+  isTradeThroughExempt: boolean;
+  timestamp: number;
+}
+
+export interface BalanceSheet {
+  symbol: string;
+  balanceSheet: [
+    {
+      reportDate: Date;
+      currentCash: number;
+      shortTermInvestments: number;
+      receivables: number;
+      inventory: number;
+      otherCurrentAssets: number;
+      currentAssets: number;
+      longTermInvestments: number;
+      propertyPlantEquipment: number;
+      goodwill: null | number;
+      intangibleAssets: null | number;
+      otherAssets: number;
+      totalAssets: number;
+      accountsPayable: number;
+      currentLongTermDebt: number;
+      otherCurrentLiabilities: number;
+      totalCurrentLiabilities: number;
+      longTermDebt: number;
+      otherLiabilities: number;
+      minorityInterest: number;
+      totalLiabilities: number;
+      commonStock: number;
+      retainedEarnings: number;
+      treasuryStock: null | number;
+      capitalSurplus: null | number;
+      shareholderEquity: number;
+      netTangibleAssets: number;
+    }
+  ];
+}
+
 export interface Company {
   symbol: string;
   companyName: string;
@@ -446,6 +549,27 @@ export interface PriceTarget {
   numberOfAnalysts: number;
 }
 
+export interface LargestTrades {
+  price: number;
+  size: number;
+  time: number;
+  timelabel: number;
+  venue: number;
+  venueName: string;
+}
+
+export interface Volume {
+  mic: string;
+  tapeId: string;
+  venueName: string;
+  volume: number;
+  tapeA: number;
+  tapeB: number;
+  tapeC: number;
+  marketPercent: number;
+  lastUpdated: number;
+}
+
 export interface Quote {
   latestPrice: number;
   latestVolume: number;
@@ -511,6 +635,34 @@ export interface Splits {
   fromFactor: string;
   /** Description of the split event. */
   description: string;
+}
+
+export interface ShortInterest {
+  SettlementDate: Date;
+  SecurityName: string;
+  CurrentShortInterest: number;
+  PreviousShortInterest: number;
+  PercentChange: number;
+  AverageDailyVolume: number;
+  DaystoCover: number;
+  StockAdjustmentFlag: string;
+  RevisionFlag: string;
+  SymbolinINETSymbology: string;
+  SymbolinCQSSymbology: string;
+  SymbolinCMSSymbology: string;
+  NewIssueFlag: string;
+  CompanyName: string;
+}
+
+export interface DailySentiment {
+  sentiment: number;
+  totalScores: number;
+  positive: number;
+  negative: number;
+}
+
+export interface MinuteSentiment extends DailySentiment {
+  minute: number;
 }
 
 export interface VolumeByVenue {

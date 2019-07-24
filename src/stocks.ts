@@ -1,60 +1,27 @@
-import {
-  Estimates,
-  Earnings,
-  Dividends,
-  CashFlow,
-  DelayedQuote,
-  CeoCompensation,
-  Company,
-  Chart,
-  DynamicChart,
-  FundOwnership,
-  Income,
-  Financials,
-  InsiderRoster,
-  InsiderSummary,
-  Stats,
-  Logo,
-  Quote,
-  Splits,
-  InsiderTransactions,
-  IntradayPrices,
-  News,
-  OHLC,
-  InstitutionalOwnership,
-  PriceTarget,
-  RecommendationTrends,
-  VolumeByVenue
-} from "./types";
-
-type Version = "beta" | "stable" | "v1" | string;
-
 /**
      - Sandbox: set to true for devlopment data
      - Version. Example: beta
      - Publishable. All REST requests require a valid token and can be added to a url like ?token=YOUR_TOKEN_HERE
 
  */
-interface Configuration {
-  publishable: string;
-  sandbox?: boolean;
-  version?: Version;
-}
+import * as iex from "./types";
 
 export default class IEXCloudClient {
   private fetchFunc: typeof fetch;
   private publishable: string;
+  private test: string;
   private sandbox: boolean;
-  private version: Version;
+  private version: iex.Version;
   private stockSymbol: string;
   private datatype: string;
 
   public constructor(
     fetchFunc: typeof fetch,
-    { publishable, sandbox = false, version = "beta" }: Configuration
+    { publishable, test, sandbox = false, version = "beta" }: iex.Configuration
   ) {
     (this.fetchFunc = fetchFunc),
       (this.publishable = publishable),
+      (this.test = test),
       (this.version = version),
       (this.sandbox = sandbox),
       (this.datatype = "stock"),
@@ -82,7 +49,7 @@ export default class IEXCloudClient {
     return this.request(`${params}/${date}`);
   };
 
-  public market = (params = ""): Promise<any> => {
+  public market = (params = ""): Promise<iex.Quote[] | iex.Volume[] | any> => {
     this.datatype = `stock/market`;
     return this.request(params);
   };
@@ -109,8 +76,11 @@ export default class IEXCloudClient {
     return this;
   };
 
-  private setToken = (token: string): string => {
-    return this.sandbox ? "T" + token : token;
+  private setToken = (token?: string): string => {
+    if (token) {
+      return token;
+    }
+    return this.sandbox ? this.test : this.publishable;
   };
 
   private params = (params = ""): string => {
@@ -146,6 +116,7 @@ export default class IEXCloudClient {
       this.datatype = "stock";
       return request;
     }
+
     return request;
   };
 
@@ -157,6 +128,7 @@ export default class IEXCloudClient {
     }/${this.stockSymbol}/batch?types=${types.map(
       (type: any) => type
     )}&token=${this.setToken(this.publishable)}`;
+
     return request;
   };
 
@@ -196,23 +168,39 @@ export default class IEXCloudClient {
   /** returns balance sheet data. Available quarterly or annually with the default being the last available quarter
    * `Data Weight: 3000`
    */
-  public balanceSheet = (): Promise<any> => {
-    return this.request(`balance-sheet`);
+  public balanceSheet = (
+    period?: iex.Period,
+    last?: iex.Last
+  ): Promise<iex.BalanceSheet> => {
+    return this.request(
+      `balance-sheet${period ? `?period=${period}` : ""}${
+        last ? `&last=${last}` : ""
+      }`
+    );
   };
 
   /**
    * returns book value for a given stock
    * `Data Weight: 1 per quote returned`
    */
-  public book = (): Promise<any> => {
+  public book = (): Promise<iex.Book> => {
     return this.request("book");
   };
 
   /**
+   * Returns adjusted and unadjusted historical data for up to 15 years.
    * `Data Weight: 1,000 per symbol per period`
    */
-  public chart = (range = "3m", date = ""): Promise<Chart[] | DynamicChart> => {
-    return this.request(`chart/${range}/${date}`);
+  public chart = (
+    range: iex.Range,
+    params: iex.ChartParams
+  ): Promise<iex.Chart[] | iex.DynamicChart> => {
+    const values = params && Object.entries(params);
+    return this.request(
+      `chart/${range}${
+        params ? "?" + values.map(v => `${v[0]}=${v[1]}`).join("&") : ""
+      }`
+    );
   };
 
   /**
@@ -220,89 +208,94 @@ export default class IEXCloudClient {
    *
    * `Data Weight: 1,000 per symbol per period`
    */
-  public cashFlow = (period = "quarter", { last = 1 }): Promise<CashFlow> => {
+  public cashFlow = (
+    period = "quarter",
+    { last = 1 }
+  ): Promise<iex.CashFlow> => {
     return this.request(`cash-flow?period=${period}&last=${last}`);
   };
 
   /** returns Ceo Compensation */
-  public ceoCompensation = (): Promise<CeoCompensation> => {
+  public ceoCompensation = (): Promise<iex.CeoCompensation> => {
     return this.request("ceo-compensation");
   };
 
   /** returns data on a given company
    *  `Data Weight: 1 per symbol`
    */
-  public company = (): Promise<Company> => {
+  public company = (): Promise<iex.Company> => {
     return this.request("company");
   };
 
   /**
    *  `Data Weight: 1 per symbol per quote`
    */
-  public delayedQuote = (): Promise<DelayedQuote> => {
+  public delayedQuote = (): Promise<iex.DelayedQuote> => {
     return this.request("delayed-quote");
   };
 
   /**
    * `Data Weight: 10 per symbol per period returned`
    */
-  public dividends = (range = "1m"): Promise<Dividends[]> => {
+  public dividends = (range = "1m"): Promise<iex.Dividends[]> => {
     return this.request(`dividends/${range}`);
   };
 
   /** Returns earnings data for a given company including the actual EPS, consensus, and fiscal period. Earnings are available quarterly (last 4 quarters).
    *  `Data Weight: 1000 per symbol per period`
    */
-  public earnings = (last = 1, { field = "" }): Promise<Earnings> => {
+  public earnings = (last = 1, { field = "" }): Promise<iex.Earnings> => {
     return this.request(`earnings/${last}/${field}`);
   };
 
   /** Returns  */
-  public estimates = (): Promise<Estimates> => {
+  public estimates = (): Promise<iex.Estimates> => {
     return this.request(`estimates`);
   };
 
-  public financials = (period = "quarterly"): Promise<Financials> => {
+  public financials = (period = "quarterly"): Promise<iex.Financials> => {
     return this.request(`financials?period=${period}`);
   };
 
-  public news = (last = 10): Promise<News[]> => {
+  public news = (last = 10): Promise<iex.News[]> => {
     return this.request(`news/last/${last}`);
   };
 
-  public fundOwnership = (): Promise<FundOwnership[]> => {
+  public fundOwnership = (): Promise<iex.FundOwnership[]> => {
     return this.request("fund-ownership");
   };
 
-  public income = (): Promise<Income> => {
-    return this.request("income");
+  public income = (period: iex.Period, last: iex.Last): Promise<iex.Income> => {
+    return this.request(
+      `income${period ? `?period=${period}` : ""}${last ? `&last=${last}` : ""}`
+    );
   };
 
-  public insiderRoster = (): Promise<InsiderRoster[]> => {
+  public insiderRoster = (): Promise<iex.InsiderRoster[]> => {
     return this.request("insider-roster");
   };
 
-  public insiderSummary = (): Promise<InsiderSummary[]> => {
+  public insiderSummary = (): Promise<iex.InsiderSummary[]> => {
     return this.request("insider-summary");
   };
 
-  public insiderTransactions = (): Promise<InsiderTransactions[]> => {
+  public insiderTransactions = (): Promise<iex.InsiderTransactions[]> => {
     return this.request("insider-transactions");
   };
 
-  public institutionalOwnership = (): Promise<InstitutionalOwnership[]> => {
+  public institutionalOwnership = (): Promise<iex.InstitutionalOwnership[]> => {
     return this.request("institutional-ownership");
   };
 
-  public intradayPrices = (): Promise<IntradayPrices[]> => {
+  public intradayPrices = (): Promise<iex.IntradayPrices[]> => {
     return this.request("intraday-prices");
   };
 
-  public logo = (): Promise<Logo> => {
+  public logo = (): Promise<iex.Logo> => {
     return this.request("logo");
   };
 
-  public largestTrades = (): Promise<any> => {
+  public largestTrades = (): Promise<iex.LargestTrades> => {
     return this.request("largest-trades");
   };
 
@@ -317,7 +310,7 @@ export default class IEXCloudClient {
     return this.request("peers");
   };
 
-  public previous = (): Promise<any> => {
+  public previous = (): Promise<iex.Chart> => {
     return this.request("previous");
   };
 
@@ -325,39 +318,42 @@ export default class IEXCloudClient {
     return this.request("price");
   };
 
-  public priceTarget = (): Promise<PriceTarget> => {
+  public priceTarget = (): Promise<iex.PriceTarget> => {
     return this.request("price-target");
   };
 
-  public ohlc = (): Promise<OHLC> => {
+  public ohlc = (): Promise<iex.OHLC> => {
     return this.request("ohlc");
   };
 
-  public sentiment = (type = "daily", { date = "" }): Promise<any> => {
-    return this.request(`sentiment/${type}/${date}`);
+  public sentiment = (
+    type = "daily",
+    date = null
+  ): Promise<iex.DailySentiment[] | iex.MinuteSentiment[]> => {
+    return this.request(`sentiment/${type}${date ? "/" + date : ""}`);
   };
 
-  public quote = (field = ""): Promise<Quote> => {
+  public quote = (field = ""): Promise<iex.Quote> => {
     return this.request(`quote/${field}`);
   };
 
-  public recommendationTrends = (): Promise<RecommendationTrends> => {
+  public recommendationTrends = (): Promise<iex.RecommendationTrends> => {
     return this.request("recommendation-trends");
   };
 
-  public stats = (stat = ""): Promise<Stats> => {
+  public stats = (stat = ""): Promise<iex.Stats> => {
     return this.request(`stats/${stat}`);
   };
 
-  public splits = (range = "1m"): Promise<Splits[]> => {
+  public splits = (range: iex.Range = "1m"): Promise<iex.Splits[]> => {
     return this.request(`splits/${range}`);
   };
 
-  public shortInterest = (date = ""): Promise<any> => {
+  public shortInterest = (date = ""): Promise<iex.ShortInterest[]> => {
     return this.request(`short-interest/${date}`);
   };
 
-  public volumeByVenue = (): Promise<VolumeByVenue[]> => {
+  public volumeByVenue = (): Promise<iex.VolumeByVenue[]> => {
     return this.request("volume-by-venue");
   };
 }

@@ -21,12 +21,12 @@ const { IEXCloudClient } = require("node-iex-cloud");
 ## Configuration and Setup
 
 IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages.
-(Note: when enabling sandbox to `true`, the publishable key token is automatically prefixed with the letter `T` and doesn't require changing the existing token to access Test Data )
 
 ```javascript
 const iex = new IEX(fetch, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
+  test: "Tpk_21b4ffeccc6e3cnc1df07467a47231c6"
   version: "stable"
 });
 ```
@@ -35,6 +35,7 @@ const iex = new IEX(fetch, {
 const iex = new IEX(axios, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
+  test: "Tpk_21b4ffeccc6e3cnc1df07467a47231c6"
   version: "stable"
 });
 ```
@@ -61,42 +62,55 @@ iex
   .then(res => console.log(res));
 ```
 
+```javascript
+// Query Charts
+iex
+  .symbol("googl")
+  .chart("dynamic", { chartCloseOnly: true })
+  .then(res => console.log(res));
+
+iex
+  .symbol("aapl")
+  .chart("6m", { chartCloseOnly: true })
+  .then(res => console.log(res));
+```
+
 ### Available Methods
 
-- `balanceSheet`
-- `book`
-- `chart(range, date)`
-- `cashFlow(period?: string, last?: number)`
-- `ceoCompensation`
-- `company`
-- `delayedQuote`
-- `dividends(range)`
-- `earnings(last, field)`
-- `estimates`
-- `financials(period)`
-- `news(last)`
-- `fundOwnership`
-- `income`
-- `insiderRoster`
-- `insiderSummary`
-- `insiderTransactions`
-- `institutionalOwnership`
-- `intradayPrices`
-- `logo`
-- `largestTrades`
-- `options`
-- `peers`
-- `previous`
-- `price`
-- `priceTarget`
-- `ohlc`
-- `sentiment(type, date)`
-- `quote`
-- `recommendationTrends`
-- `stats(stat)`
-- `splits(range)`
-- `shortInterest(date)`
-- `volumeByVenue(date)`
+- [x] `balanceSheet`
+- [x] `book`
+- [x] `chart(range, date)`
+- [x] `cashFlow(period?: string, last?: number)`
+- [x] `ceoCompensation`
+- [x] `company`
+- [x] `delayedQuote`
+- [x] `dividends(range)`
+- [x] `earnings(last, field)`
+- [x] `estimates`
+- [x] `financials(period)`
+- [x] `news(last)`
+- [x] `fundOwnership`
+- [x] `income`
+- [x] `insiderRoster`
+- [x] `insiderSummary`
+- [x] `insiderTransactions`
+- [x] `institutionalOwnership`
+- [x] `intradayPrices`
+- [x] `logo`
+- [x] `largestTrades`
+- [x] `options`
+- [x] `peers`
+- [x] `previous`
+- [x] `price`
+- [x] `priceTarget`
+- [x] `ohlc`
+- [x] `sentiment(type, date)`
+- [x] `quote`
+- [x] `recommendationTrends`
+- [x] `stats(stat)`
+- [x] `splits(range)`
+- [x] `shortInterest(date)`
+- [x] `volumeByVenue(date)`
 
 ### Market
 
