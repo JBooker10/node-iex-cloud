@@ -30,7 +30,6 @@ IEX Cloud uses a message weighting system to measure usage in message counts, ma
 const iex = new IEX(fetch, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
-  test: "Tpk_21b4ffeccc6e3cnc1df07467a47231c6"
   version: "stable"
 });
 ```
