@@ -9,7 +9,6 @@ import * as iex from "./types";
 export default class IEXCloudClient {
   private fetchFunc: typeof fetch;
   private publishable: string;
-  private test: string;
   private sandbox: boolean;
   private version: iex.Version;
   private stockSymbol: string;
@@ -17,11 +16,10 @@ export default class IEXCloudClient {
 
   public constructor(
     fetchFunc: typeof fetch,
-    { publishable, test, sandbox = false, version = "beta" }: iex.Configuration
+    { publishable, sandbox = false, version = "beta" }: iex.Configuration
   ) {
     (this.fetchFunc = fetchFunc),
       (this.publishable = publishable),
-      (this.test = test),
       (this.version = version),
       (this.sandbox = sandbox),
       (this.datatype = "stock"),
@@ -76,11 +74,8 @@ export default class IEXCloudClient {
     return this;
   };
 
-  private setToken = (token?: string): string => {
-    if (token) {
-      return token;
-    }
-    return this.sandbox ? this.test : this.publishable;
+  private setToken = (token: string): string => {
+    return this.sandbox && token[0] !== "T" ? "T" + token : token;
   };
 
   private params = (params = ""): string => {

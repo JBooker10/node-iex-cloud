@@ -5,7 +5,6 @@ require("dotenv").config();
 const iex = new IEXCloudClient(fetch, {
   sandbox: true,
   publishable: process.env.PUBLISHABLE,
-  test: process.env.TEST,
   version: "stable"
 });
 
