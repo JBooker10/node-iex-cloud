@@ -1,6 +1,5 @@
 # node-iex-cloud
 
-
 See IEX API [Documentation](https://iexcloud.io/docs/api) for more information.
 
 ## Installation and Usage
@@ -27,11 +26,7 @@ const fetch = require("node-fetch");
 
 ## Configuration and Setup
 
-<<<<<<< HEAD
-IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching request limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data )
-=======
-IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data ) MAKE SURE PUBLIC KEY & NOT PRIVATE KEY IS BEING USED as it is prefixed with: `"pk_"` 
->>>>>>> cd7759a7301d9d502ac285dbd523986850af0af1
+IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data ) MAKE SURE PUBLIC KEY & NOT PRIVATE KEY IS BEING USED as it is prefixed with: `"pk_"`
 
 ```javascript
 const iex = new IEX(fetch, {
