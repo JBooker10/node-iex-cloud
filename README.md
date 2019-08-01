@@ -1,5 +1,8 @@
 # node-iex-cloud
 
+
+See IEX API [Documentation](https://iexcloud.io/docs/api) for more information.
+
 ## Installation and Usage
 
 ```bash
@@ -24,13 +27,12 @@ const fetch = require("node-fetch");
 
 ## Configuration and Setup
 
-IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data )
+IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching request limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data )
 
 ```javascript
 const iex = new IEX(fetch, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
-  test: "Tpk_21b4ffeccc6e3cnc1df07467a47231c6"
   version: "stable"
 });
 ```
@@ -66,46 +68,46 @@ iex
 
 iex
   .symbol("aapl")
-  .chart("6m", { chartCloseOnly: true })
+  .chart("6m", { chartCloseOnly: true, chartSimplify: true, chartInterval: 2 })
   .then(res => console.log(res));
 ```
 
 ### Available Methods
 
-- [x] `balanceSheet`
+- [x] `balanceSheet(period?)`
 - [x] `book`
-- [x] `chart(range, date)`
+- [x] `chart(range?: string, params?: object)`
 - [x] `cashFlow(period?: string, last?: number)`
 - [x] `ceoCompensation`
 - [x] `company`
 - [x] `delayedQuote`
-- [x] `dividends(range)`
+- [x] `dividends(range?)`
 - [x] `earnings(last, field)`
 - [x] `estimates`
-- [x] `financials(period)`
-- [x] `news(last)`
+- [x] `financials(period?: string)`
+- [x] `news(last?: number)`
 - [x] `fundOwnership`
-- [x] `income`
+- [x] `income(period?: string, last?: number)`
 - [x] `insiderRoster`
 - [x] `insiderSummary`
 - [x] `insiderTransactions`
 - [x] `institutionalOwnership`
-- [x] `intradayPrices`
+- [x] `intradayPrices(params?: object)`
 - [x] `logo`
 - [x] `largestTrades`
-- [x] `options`
+- [x] `options(expiration?: string, optionSide?: string)`
 - [x] `peers`
 - [x] `previous`
 - [x] `price`
 - [x] `priceTarget`
 - [x] `ohlc`
-- [x] `sentiment(type, date)`
-- [x] `quote`
+- [x] `sentiment(type?: string, date?: string)`
+- [x] `quote(field: string)`
 - [x] `recommendationTrends`
-- [x] `stats(stat)`
+- [x] `stats(stat?: string)`
 - [x] `splits(range)`
-- [x] `shortInterest(date)`
-- [x] `volumeByVenue(date)`
+- [x] `shortInterest(date?: string)`
+- [x] `volumeByVenue`
 
 ### Market
 

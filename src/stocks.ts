@@ -1,9 +1,3 @@
-/**
-     - Sandbox: set to true for devlopment data
-     - Version. Example: beta
-     - Publishable. All REST requests require a valid token and can be added to a url like ?token=YOUR_TOKEN_HERE
-
- */
 import * as iex from "./types";
 
 export default class IEXCloudClient {
@@ -44,7 +38,7 @@ export default class IEXCloudClient {
   /** Returns daily stats for a given time frame */
   public historicalStats = (params = "", date = "") => {
     this.datatype = "stats";
-    return this.request(`${params}/${date}`);
+    return this.request(`${params ? params : ""}${"/" + date ? date : ""}`);
   };
 
   public market = (params = ""): Promise<iex.Quote[] | iex.Volume[] | any> => {
@@ -57,13 +51,13 @@ export default class IEXCloudClient {
   };
 
   /** Time series is the most common type of data available, and consists of a collection of data points over a period of time. Time series data is indexed by a single date field, and can be retrieved by any portion of time. To use this endpoint, you’ll first make a free call to get an inventory of available time series data.  */
-  public timeSeries = ({ id, subkey = "" }: any) => {
+  public timeSeries = (id = "", subkey: string) => {
     this.datatype = `time-series/${id}`;
     return this.request(`${subkey}`);
   };
 
   /** DEEP is used to receive real-time depth of book quotations direct from IEX. The depth of book quotations received via DEEP provide an aggregated size of resting displayed orders at a price and side, and do not indicate the size or number of individual orders at any price level. Non-displayed orders and non-displayed portions of reserve orders are not represented in DEEP. */
-  public deep = (params = "") => {
+  public deep = (params = ""): Promise<any> => {
     this.datatype = "deep";
     return this.request(params);
   };
@@ -74,7 +68,7 @@ export default class IEXCloudClient {
     return this;
   };
 
-  private setToken = (token: string): string => {
+  private setToken = (token: string) => {
     return this.sandbox && token[0] !== "T" ? "T" + token : token;
   };
 
@@ -92,6 +86,7 @@ export default class IEXCloudClient {
         this.stockSymbol
       }&token=${this.setToken(this.publishable)}`;
       this.datatype = "stock";
+      this.sandbox && console.log(request);
       return request;
     }
 
@@ -100,6 +95,7 @@ export default class IEXCloudClient {
         this.publishable
       )}`;
       this.datatype = "stock";
+      this.sandbox && console.log(request);
       return request;
     }
 
@@ -109,13 +105,14 @@ export default class IEXCloudClient {
       )}`;
 
       this.datatype = "stock";
+      this.sandbox && console.log(request);
       return request;
     }
-
+    this.sandbox && console.log(request);
     return request;
   };
 
-  private batchParams = (...types: any): string => {
+  private batchParams = (...types: string[]): string => {
     const env = this.sandbox ? "sandbox" : "cloud";
 
     const request = `https://${env}.iexapis.com/${this.version}/${
@@ -144,7 +141,7 @@ export default class IEXCloudClient {
   };
 
   /** batch returns multipe data-types for a give stock symbol */
-  public batch = async (...params: any[]) => {
+  public batch = async (...params: any) => {
     try {
       const res = await this.fetchFunc(this.batchParams(params));
       const contentType = res.headers.get("content-type");
@@ -204,7 +201,7 @@ export default class IEXCloudClient {
    * `Data Weight: 1,000 per symbol per period`
    */
   public cashFlow = (
-    period = "quarter",
+    period: iex.Period = "quarterly",
     { last = 1 }
   ): Promise<iex.CashFlow> => {
     return this.request(`cash-flow?period=${period}&last=${last}`);
@@ -232,15 +229,20 @@ export default class IEXCloudClient {
   /**
    * `Data Weight: 10 per symbol per period returned`
    */
-  public dividends = (range = "1m"): Promise<iex.Dividends[]> => {
-    return this.request(`dividends/${range}`);
+  public dividends = (range: iex.Range): Promise<iex.Dividends[]> => {
+    return this.request(`dividends${range ? "/" + range : ""}`);
   };
 
   /** Returns earnings data for a given company including the actual EPS, consensus, and fiscal period. Earnings are available quarterly (last 4 quarters).
    *  `Data Weight: 1000 per symbol per period`
    */
-  public earnings = (last = 1, { field = "" }): Promise<iex.Earnings> => {
-    return this.request(`earnings/${last}/${field}`);
+  public earnings = (
+    last?: iex.Last,
+    field?: string
+  ): Promise<iex.Earnings> => {
+    return this.request(
+      `earnings${last ? "/" + last : ""}${field ? "/" + field : ""}`
+    );
   };
 
   /** Returns  */
@@ -248,7 +250,9 @@ export default class IEXCloudClient {
     return this.request(`estimates`);
   };
 
-  public financials = (period = "quarterly"): Promise<iex.Financials> => {
+  public financials = (
+    period: iex.Period = "quarterly"
+  ): Promise<iex.Financials> => {
     return this.request(`financials?period=${period}`);
   };
 
@@ -294,11 +298,15 @@ export default class IEXCloudClient {
     return this.request("largest-trades");
   };
 
-  public options = ({
+  public options = (
     expiration = "",
-    optionSide = ""
-  }): Promise<string[] | any> => {
-    return this.request(`options/${expiration}/${optionSide}`);
+    optionSide?: iex.OptionSide
+  ): Promise<string[] | any> => {
+    return this.request(
+      `options${expiration ? "/" + expiration : ""}${
+        optionSide ? "/" + optionSide : ""
+      }`
+    );
   };
 
   public peers = (): Promise<string[]> => {
@@ -329,7 +337,7 @@ export default class IEXCloudClient {
   };
 
   public quote = (field = ""): Promise<iex.Quote> => {
-    return this.request(`quote/${field}`);
+    return this.request(`quote/${field ? field : ""}`);
   };
 
   public recommendationTrends = (): Promise<iex.RecommendationTrends> => {

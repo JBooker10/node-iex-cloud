@@ -2,7 +2,7 @@ import { IEXCloudClient } from "./../lib/index";
 const fetch = require("node-fetch");
 require("dotenv").config();
 const config = require("./config");
-
+console.log(config);
 const iex = new IEXCloudClient(fetch, config);
 
 test("Company Data", () => {
@@ -56,6 +56,6 @@ test("Batch Request", () => {
 test("Earnings Data", () => {
   return iex
     .symbol("aapl")
-    .earnings(1, { field: "" })
+    .earnings()
     .then(res => expect(res).toHaveProperty("earnings"));
 });

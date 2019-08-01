@@ -1,3 +1,9 @@
+/**
+     - Sandbox: set to true for devlopment data
+     - Version. Example: beta
+     - Publishable. All REST requests require a valid token and can be added to a url like ?token=YOUR_TOKEN_HERE
+
+ */
 export interface Configuration {
   publishable: string;
   test: string;
@@ -6,8 +12,9 @@ export interface Configuration {
 }
 
 export type Version = "beta" | "stable" | "v1" | string;
-export type Period = "annual" | "quarter";
+export type Period = "annual" | "quarterly";
 export type Last = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type OptionSide = "put" | "call";
 export type Range =
   | "max"
   | "5y"

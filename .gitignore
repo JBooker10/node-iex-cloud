@@ -1,4 +1,5 @@
 node_modules
+__test__/.env
 /lib
 .env
 .vscode

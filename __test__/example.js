@@ -10,10 +10,10 @@ const iex = new IEXCloudClient(fetch, {
 
 iex.market("list/mostactive").then(res => console.log(res));
 
-// iex
-//   .symbol("googl")
-//   .batch("company", "balance-sheet", "cash-flow", "estimates")
-//   .then(res => console.log(res));
+iex
+  .symbol("googl")
+  .batch("company", "balance-sheet", "cash-flow", "estimates")
+  .then(res => console.log(res));
 
 // iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
 
