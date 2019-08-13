@@ -29,7 +29,7 @@ const fetch = require("node-fetch");
 IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data ) MAKE SURE PUBLIC KEY & NOT PRIVATE KEY IS BEING USED as it is prefixed with: `"pk_"`
 
 ```javascript
-const iex = new IEX(fetch, {
+const iex = new IEXCloudClient(fetch, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
   version: "stable"
