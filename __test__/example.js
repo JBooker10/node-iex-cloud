@@ -12,9 +12,19 @@ iex.market("list/mostactive").then(res => console.log(res));
 
 iex
   .symbol("googl")
-  .batch("company", "balance-sheet", "cash-flow", "estimates")
+  .company()
   .then(res => console.log(res));
 
-// iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
+iex
+  .symbols("googl,amzn,fb")
+  .price()
+  .then(res => console.log(res));
 
-// iex.symbol("aapl").estimates.then(res => res);
+iex.historicalStats("recent").then(res => console.log(res));
+
+iex
+  .symbol("AAPL")
+  .recommendationTrends()
+  .then(res => console.log(res));
+
+iex.tops("aapl", "googl", "amzn").then(res => console.log(res));

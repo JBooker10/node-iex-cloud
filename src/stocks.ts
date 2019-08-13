@@ -6,6 +6,7 @@ export default class IEXCloudClient {
   private sandbox: boolean;
   private version: iex.Version;
   private stockSymbol: string;
+  private stockSymbols: string[];
   private datatype: string;
 
   public constructor(
@@ -18,6 +19,7 @@ export default class IEXCloudClient {
       (this.sandbox = sandbox),
       (this.datatype = "stock"),
       (this.stockSymbol = ""),
+      (this.stockSymbols = []),
       (this.request = this.request);
   }
 
@@ -36,9 +38,12 @@ export default class IEXCloudClient {
   };
 
   /** Returns daily stats for a given time frame */
-  public historicalStats = (params = "", date = "") => {
+  public historicalStats = (
+    params: iex.StatType,
+    date?: string
+  ): Promise<iex.HistoricalStats | iex.Recent[] | iex.IntraDay> => {
     this.datatype = "stats";
-    return this.request(`${params ? params : ""}${"/" + date ? date : ""}`);
+    return this.request(`${params ? params : ""}${date ? "/" + date : ""}`);
   };
 
   public market = (params = ""): Promise<iex.Quote[] | iex.Volume[] | any> => {
@@ -68,6 +73,13 @@ export default class IEXCloudClient {
     return this;
   };
 
+  /** Takes in multiple stock symbols, and batches them to a single request  */
+  public symbols = (...symbols: string[]): IEXCloudClient => {
+    this.datatype = "stock/market/batch";
+    this.stockSymbols = symbols;
+    return this;
+  };
+
   private setToken = (token: string) => {
     return this.sandbox && token[0] !== "T" ? "T" + token : token;
   };
@@ -85,6 +97,15 @@ export default class IEXCloudClient {
       const request = `${url}/${params}?symbols=${
         this.stockSymbol
       }&token=${this.setToken(this.publishable)}`;
+      this.datatype = "stock";
+      this.sandbox && console.log(request);
+      return request;
+    }
+
+    if (this.datatype === "stock/market/batch") {
+      const request = `${url}?symbols=${this.stockSymbols.map(
+        symbol => symbol
+      )}&types=${params}&token=${this.setToken(this.publishable)}`;
       this.datatype = "stock";
       this.sandbox && console.log(request);
       return request;
@@ -114,13 +135,23 @@ export default class IEXCloudClient {
 
   private batchParams = (...types: string[]): string => {
     const env = this.sandbox ? "sandbox" : "cloud";
+    const url = `https://${env}.iexapis.com/${this.version}/${this.datatype}`;
 
-    const request = `https://${env}.iexapis.com/${this.version}/${
-      this.datatype
-    }/${this.stockSymbol}/batch?types=${types.map(
+    if (this.datatype === "stock/market/batch") {
+      const request = `${url}/batch?symbols=${this.stockSymbols.map(
+        symbol => symbol
+      )}&types=${types.map((type: any) => type)}&token=${this.setToken(
+        this.publishable
+      )}`;
+      this.datatype = "stock";
+      this.sandbox && console.log(request);
+      return request;
+    }
+
+    const request = `${url}/${this.stockSymbol}/batch?types=${types.map(
       (type: any) => type
     )}&token=${this.setToken(this.publishable)}`;
-
+    this.sandbox && console.log(request);
     return request;
   };
 
@@ -208,7 +239,7 @@ export default class IEXCloudClient {
   };
 
   /** returns Ceo Compensation */
-  public ceoCompensation = (): Promise<iex.CeoCompensation> => {
+  public ceoCompensation = (): Promise<iex.CeoCompensation | any> => {
     return this.request("ceo-compensation");
   };
 
@@ -245,59 +276,74 @@ export default class IEXCloudClient {
     );
   };
 
-  /** Returns  */
+  /** Provides the latest consensus estimate for the next fiscal period */
   public estimates = (): Promise<iex.Estimates> => {
     return this.request(`estimates`);
   };
 
+  /** Pulls income statement, balance sheet, and cash flow data from the most recent reported quarter. */
   public financials = (
     period: iex.Period = "quarterly"
   ): Promise<iex.Financials> => {
     return this.request(`financials?period=${period}`);
   };
 
+  /** Returns latest news for a give stock symbol */
   public news = (last = 10): Promise<iex.News[]> => {
     return this.request(`news/last/${last}`);
   };
 
+  /**
+   * Returns the top 10 fund holders, meaning any firm not defined as buy-side or sell-side such as mutual funds, pension funds, endowments, investment firms, and other large entities that manage funds on behalf of others.
+   */
   public fundOwnership = (): Promise<iex.FundOwnership[]> => {
     return this.request("fund-ownership");
   };
 
+  /** Pulls income statement data. Available quarterly or annually with the default being the last available quarter. */
   public income = (period: iex.Period, last: iex.Last): Promise<iex.Income> => {
     return this.request(
       `income${period ? `?period=${period}` : ""}${last ? `&last=${last}` : ""}`
     );
   };
 
+  /** Returns the top 10 insiders, with the most recent information. */
   public insiderRoster = (): Promise<iex.InsiderRoster[]> => {
     return this.request("insider-roster");
   };
 
+  /** Returns aggregated insiders summary data for the last 6 months. */
   public insiderSummary = (): Promise<iex.InsiderSummary[]> => {
     return this.request("insider-summary");
   };
 
+  /** Returns insider transactions. */
   public insiderTransactions = (): Promise<iex.InsiderTransactions[]> => {
     return this.request("insider-transactions");
   };
 
+  /** 
+  Returns the top 10 institutional holders, defined as buy-side or sell-side firms. */
   public institutionalOwnership = (): Promise<iex.InstitutionalOwnership[]> => {
     return this.request("institutional-ownership");
   };
 
+  /** This endpoint will return aggregated intraday prices in one minute buckets */
   public intradayPrices = (): Promise<iex.IntradayPrices[]> => {
     return this.request("intraday-prices");
   };
 
+  /** This is a helper function, but the google APIs url is standardized.  */
   public logo = (): Promise<iex.Logo> => {
     return this.request("logo");
   };
 
+  /**  This returns 15 minute delayed, last sale eligible trades. */
   public largestTrades = (): Promise<iex.LargestTrades> => {
     return this.request("largest-trades");
   };
 
+  /** Returns end of day options data */
   public options = (
     expiration = "",
     optionSide?: iex.OptionSide
@@ -309,26 +355,33 @@ export default class IEXCloudClient {
     );
   };
 
+  /** Returns peer group */
   public peers = (): Promise<string[]> => {
     return this.request("peers");
   };
 
+  /** Returns previous day adjusted price data for one or more stocks. */
   public previous = (): Promise<iex.Chart> => {
     return this.request("previous");
   };
 
+  /** Returns price of a stock */
   public price = (): Promise<number> => {
     return this.request("price");
   };
 
+  /** Provides the latest avg, high, and low analyst price target for a symbol. */
   public priceTarget = (): Promise<iex.PriceTarget> => {
     return this.request("price-target");
   };
 
+  /** Returns the official open and close for a give symbol. The official open is available as soon as 9:45am ET and the official close as soon as 4:15pm ET. Some stocks can report late open or close prices. */
   public ohlc = (): Promise<iex.OHLC> => {
     return this.request("ohlc");
   };
 
+  /** 
+This endpoint provides social sentiment data from StockTwits. Data can be viewed as a daily value, or by minute for a given date. */
   public sentiment = (
     type = "daily",
     date = null
@@ -340,6 +393,7 @@ export default class IEXCloudClient {
     return this.request(`quote/${field ? field : ""}`);
   };
 
+  /** Pulls data from the last four months. */
   public recommendationTrends = (): Promise<iex.RecommendationTrends> => {
     return this.request("recommendation-trends");
   };
@@ -356,6 +410,7 @@ export default class IEXCloudClient {
     return this.request(`short-interest/${date}`);
   };
 
+  /** This returns 15 minute delayed and 30 day average consolidated volume percentage of a stock, by market. This call will always return 13 values, and will be sorted in ascending order by current day trading volume percentage. */
   public volumeByVenue = (): Promise<iex.VolumeByVenue[]> => {
     return this.request("volume-by-venue");
   };

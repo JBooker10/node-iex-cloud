@@ -2,27 +2,26 @@ import { IEXCloudClient } from "./../lib/index";
 const fetch = require("node-fetch");
 require("dotenv").config();
 const config = require("./config");
-console.log(config);
 const iex = new IEXCloudClient(fetch, config);
 
-test("Company Data", () => {
+test("Company", () => {
   return iex
     .symbol("AAPL")
     .company()
     .then(res => expect(res).toHaveProperty("symbol"));
 });
 
-test("Book Data", () => {
+test("Book", () => {
   return iex
     .symbol("AAPL")
     .book()
     .then(res => expect(res).toHaveProperty("quote"));
 });
 
-test("Balance Sheet Data", () => {
+test("Balance Sheet", () => {
   return iex
     .symbol("AAPL")
-    .balanceSheet()
+    .balanceSheet("quarterly")
     .then(res => expect(res).toHaveProperty("balancesheet"));
 });
 
@@ -33,7 +32,7 @@ test("Deep Data", () => {
     .then(res => expect(res).toMatchObject({}));
 });
 
-test("Ceo Compensation Data", () => {
+test("Ceo Compensation", () => {
   return iex
     .symbol("AAPL")
     .ceoCompensation()
@@ -47,15 +46,30 @@ test("Batch Request", () => {
     .then(res => expect(res).toHaveProperty("company.symbol"));
 });
 
-// test("Today Earnings Data", () => {
-//   return iex
-//     .market("today-earnings")
-//     .then(res => expect(res).toHaveProperty("amc"));
-// });
-
-test("Earnings Data", () => {
+test.skip("Today Earnings", () => {
   return iex
-    .symbol("aapl")
-    .earnings()
-    .then(res => expect(res).toHaveProperty("earnings"));
+    .symbol("googl")
+    .market("today-earnings")
+    .then(res => expect(res).toHaveProperty("amc"));
+});
+
+test("Estimates", () => {
+  return iex
+    .symbol("googl")
+    .estimates()
+    .then(res => expect(res).toHaveProperty("symbol"));
+});
+
+test("Batch Request and Symbols", () => {
+  return iex
+    .symbols("googl, amzn, fb")
+    .batch("company", "balance-sheet", "cash-flow", "estimates")
+    .then(res => expect(res).toHaveProperty("GOOGL"));
+});
+
+test("Batch Symbols Ceo Compensation", () => {
+  return iex
+    .symbols("googl, amzn, fb")
+    .ceoCompensation()
+    .then(res => expect(res).toHaveProperty("GOOGL"));
 });

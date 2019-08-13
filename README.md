@@ -127,7 +127,27 @@ iex
   .then(res => console.log(res));
 ```
 
-### Batch
+### Batch Symbols
+
+Use method `symbols` instead of `"symbol"` to batch multiple stock symbols together, IEX allows only up to `10` symbols to be made per request.
+
+```javascript
+// batch?symbols=googl,amzn,fb&types=company
+iex
+  .symbols("googl,amzn,fb")
+  .company()
+  .then(res => console.log(res));
+```
+
+```javascript
+// batch?symbols=googl,amzn,fb&types=price
+iex
+  .symbols("googl,amzn,fb,aapl")
+  .price()
+  .then(res => console.log(res));
+```
+
+### Batch Types
 
 Use the method `batch` to batch Request of multiple data types, all IEX types are supported. IEX allows only up to `10` types to be made per request.
 
@@ -135,6 +155,16 @@ Use the method `batch` to batch Request of multiple data types, all IEX types ar
 iex
   // stock/googl/batch?types=stock,company,balance-sheet,cash-flow,estimates
   .symbol("googl")
+  .batch("company", "balance-sheet", "cash-flow", "estimates")
+  .then(res => console.log(res));
+```
+
+### Batch Symbols & Types
+
+```javascript
+//batch?symbols=googl,amzn,fb,aapl&types=company,balance-sheet,cash-flow,estimates
+iex
+  .symbols("googl,amzn,fb,aapl")
   .batch("company", "balance-sheet", "cash-flow", "estimates")
   .then(res => console.log(res));
 ```
@@ -173,4 +203,4 @@ Not Yet Supported
 
 ### Web Sockets
 
-Not Yet Supported
+Coming Soon

@@ -15,6 +15,7 @@ export type Version = "beta" | "stable" | "v1" | string;
 export type Period = "annual" | "quarterly";
 export type Last = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type OptionSide = "put" | "call";
+export type StatType = "historical" | "intraday" | "recent" | "records";
 export type Range =
   | "max"
   | "5y"
@@ -678,4 +679,116 @@ export interface VolumeByVenue {
   venueName: string;
   date: string;
   marketPercent: number;
+}
+
+export interface HistoricalStats {
+  averageDailyVolume: number;
+  averageDailyRoutedVolume: number;
+  averageMarketShare: number;
+  averageOrderSize: number;
+  averageFillSize: number;
+  bin100Percent: number;
+  bin101Percent: number;
+  bin200Percent: number;
+  bin300Percent: number;
+  bin400Percent: number;
+  bin500Percent: number;
+  bin1000Percent: number;
+  bin5000Percent: number;
+  bin10000Percent: number;
+  bin10000Trades: number;
+  bin20000Trades: number;
+  bin50000Trades: number;
+  uniqueSymbolsTraded: number;
+  blockPercent: number;
+  selfCrossPercent: number;
+  etfPercent: number;
+  largeCapPercent: number;
+  midCapPercent: number;
+  smallCapPercent: number;
+  venueARCXFirstWaveWeight: number;
+  venueBATSFirstWaveWeight: number;
+  venueBATYFirstWaveWeight: number;
+  venueEDGAFirstWaveWeight: number;
+  venueEDGXFirstWaveWeight: number;
+  venueOverallFirstWaveWeight: number;
+  venueXASEFirstWaveWeight: number;
+  venueXBOSFirstWaveWeight: number;
+  venueXCHIFirstWaveWeight: number;
+  venueXCISFirstWaveWeight: number;
+  venueXNGSFirstWaveWeight: number;
+  venueXNYSFirstWaveWeight: number;
+  venueXPHLFirstWaveWeight: number;
+  venueARCXFirstWaveRate: number;
+  venueBATSFirstWaveRate: number;
+  venueBATYFirstWaveRate: number;
+  venueEDGAFirstWaveRate: number;
+  venueEDGXFirstWaveRate: number;
+  venueOverallFirstWaveRate: number;
+  venueXASEFirstWaveRate: number;
+  venueXBOSFirstWaveRate: number;
+  venueXCHIFirstWaveRate: number;
+  venueXCISFirstWaveRate: number;
+  venueXNGSFirstWaveRate: number;
+  venueXNYSFirstWaveRate: number;
+  venueXPHLFirstWaveRate: number;
+}
+
+export interface IntraDay {
+  volume: {
+    value: number;
+    lastUpdated: number;
+  };
+  symbolsTraded: {
+    value: number;
+    lastUpdated: number;
+  };
+  routedVolume: {
+    value: number;
+    lastUpdated: number;
+  };
+  notional: {
+    value: number;
+    lastUpdated: number;
+  };
+  marketShare: {
+    value: number;
+    lastUpdated: number;
+  };
+}
+
+export interface Recent {
+  date: Date;
+  volume: number;
+  routedVolume: number;
+  marketShare: number;
+  isHalfday: boolean;
+  litVolume: number;
+}
+
+export interface Records {
+  volume: {
+    recordValue: number;
+    recordDate: Date;
+    previousDayValue: number;
+    avg30Value: number;
+  };
+  symbolsTraded: {
+    recordValue: number;
+    recordDate: Date;
+    previousDayValue: number;
+    avg30Value: number;
+  };
+  routedVolume: {
+    recordValue: number;
+    recordDate: Date;
+    previousDayValue: number;
+    avg30Value: number;
+  };
+  notional: {
+    recordValue: number;
+    recordDate: Date;
+    previousDayValue: number;
+    avg30Value: number;
+  };
 }
