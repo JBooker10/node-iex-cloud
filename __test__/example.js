@@ -29,9 +29,7 @@ iex
 
 iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
 
-iex.search("international business machines").then(res =>
-  iex
-    .symbol(res[0].symbol)
-    .company()
-    .then(res => console.log(res))
-);
+iex
+  .search("international business machines")
+  .then(res => iex.symbol(res[0].symbol).company())
+  .then(res => console.log(res));

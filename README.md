@@ -126,7 +126,7 @@ iex
 - [x] `shortInterest(date?: string)`
 - [x] `volumeByVenue`
 
-### Search Companies
+### Search Companies [Only included with paid subscription plans](https://iexcloud.io/docs/api/#search)
 
 ```javascript
 // search/microsoft
@@ -136,7 +136,7 @@ iex.search("microsoft").then(res => console.log(res));
 iex.search("google").then(res => console.log(res));
 ```
 
-### Advance Searching
+### Advance Searching [Only included with paid subscription plans](https://iexcloud.io/docs/api/#search)
 
 To retreive a company's stock data using a company's full name, use the search method to
 search for the `companyName` then access the first index to grab the most relevant `symbol`
@@ -144,22 +144,18 @@ search for the `companyName` then access the first index to grab the most releva
 ```javascript
 // search/facebook
 iex.search("facebook").then(res =>
-  // search/fb/company
-  iex
-    .symbol(res[0].symbol)
-    .company()
-    .then(res => console.log(res))
-);
+  // stock/fb/company
+ .then(res => iex.symbol(res[0].symbol).company())
+ .then(res => console.log(res));
 ```
 
 ```javascript
-// search/international%20busines%20machines
-iex.search("international business machines").then(res =>
-  // search/ibm/balancesheet
-  iex
-    .symbol(res[0].symbol)
-    .balanceSheet("annual")
-    .then(res => console.log(res))
+// search/international%20business%20machines
+iex
+  .search("international business machines")
+  // stock/ibm/company
+  .then(res => iex.symbol(res[0].symbol).balanceSheet())
+  .then(res => console.log(res));
 );
 ```
 
@@ -207,8 +203,8 @@ iex
 Use the method `batch` to batch Request of multiple data types, all IEX types are supported. IEX allows only up to `10` types to be made per request.
 
 ```javascript
+// stock/googl/batch?types=stock,company,balance-sheet,cash-flow,estimates
 iex
-  // stock/googl/batch?types=stock,company,balance-sheet,cash-flow,estimates
   .symbol("googl")
   .batch("company", "balance-sheet", "cash-flow", "estimates")
   .then(res => console.log(res));
@@ -217,7 +213,7 @@ iex
 ### Batch Symbols & Types
 
 ```javascript
-//batch?symbols=googl,amzn,fb,aapl&types=company,balance-sheet,cash-flow,estimates
+// batch?symbols=googl,amzn,fb,aapl&types=company,balance-sheet,cash-flow,estimates
 iex
   .symbols("googl,amzn,fb,aapl")
   .batch("company", "balance-sheet", "cash-flow", "estimates")
