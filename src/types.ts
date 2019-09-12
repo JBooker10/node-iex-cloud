@@ -792,3 +792,25 @@ export interface Records {
     avg30Value: number;
   };
 }
+
+export interface CryptoQuote {
+  symbol: string;
+  primaryExchange: string;
+  sector: string;
+  calculationPrice: string;
+  high: string;
+  low: string;
+  latestPrice: string;
+  latestSource: string;
+  latestUpdate: number;
+  latestVolume: string;
+  previousClose: string;
+}
+
+export interface Search {
+  symbol: string;
+  securityName: string;
+  securityType: string;
+  region: string;
+  exchange: string;
+}

@@ -71,6 +71,24 @@ iex
   .then(res => console.log(res));
 ```
 
+### Crypto Currencies
+
+Only quotes are available see [Documentation](https://iexcloud.io/docs/api/#crypto) for more info
+
+```javascript
+// crypto/btcusd/quote
+iex
+  .crypto("btcusd")
+  .quote()
+  .then(res => console.log(res));
+
+iex
+  .crypto("ethusd")
+  // crypto/ethusd/quote
+  .quote()
+  .then(res => console.log(res));
+```
+
 ### Available Methods
 
 - [x] `balanceSheet(period?)`
@@ -107,6 +125,14 @@ iex
 - [x] `splits(range)`
 - [x] `shortInterest(date?: string)`
 - [x] `volumeByVenue`
+
+### Search Company with Results Sorted by Relevancy
+
+```javascript
+iex.search("microsoft").then(res => console.log(res));
+
+iex.search("google").then(res => console.log(res));
+```
 
 ### Market
 

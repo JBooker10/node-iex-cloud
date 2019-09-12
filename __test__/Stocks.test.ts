@@ -73,3 +73,10 @@ test("Batch Symbols Ceo Compensation", () => {
     .ceoCompensation()
     .then(res => expect(res).toHaveProperty("GOOGL"));
 });
+
+test("Crypto currencies quote", () => {
+  return iex
+    .crypto("btcusd")
+    .quote()
+    .then(res => expect(res).toHaveProperty("primaryExchange"));
+});

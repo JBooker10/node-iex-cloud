@@ -8,6 +8,7 @@ export default class IEXCloudClient {
   private stockSymbol: string;
   private stockSymbols: string[];
   private datatype: string;
+  private cryptoCurrency: string;
 
   public constructor(
     fetchFunc: typeof fetch,
@@ -18,6 +19,7 @@ export default class IEXCloudClient {
       (this.version = version),
       (this.sandbox = sandbox),
       (this.datatype = "stock"),
+      (this.cryptoCurrency = ""),
       (this.stockSymbol = ""),
       (this.stockSymbols = []),
       (this.request = this.request);
@@ -73,6 +75,22 @@ export default class IEXCloudClient {
     return this;
   };
 
+  /** This will a quote for Cryptocurrencies supported by the IEX API. Each element is a standard */
+  public crypto = (crypto: string): IEXCloudClient => {
+    this.datatype = "crypto";
+    this.cryptoCurrency = crypto;
+    return this;
+  };
+
+  /**  Returns an array of symbols up to the top 10 matches.
+   * Results will be sorted for relevancy. Search currently defaults to equities only, where the symbol returned is supported by endpoints listed under the Stocks category.
+   * @params search by symbol or security name.
+   */
+  public search = (symbol: string): Promise<iex.Search[]> => {
+    this.datatype = "search";
+    return this.request(symbol);
+  };
+
   /** Takes in multiple stock symbols, and batches them to a single request  */
   public symbols = (...symbols: string[]): IEXCloudClient => {
     this.datatype = "stock/market/batch";
@@ -89,14 +107,11 @@ export default class IEXCloudClient {
     const url = `https://${env}.iexapis.com/${this.version}/${this.datatype}`;
     const operand = params.match(new RegExp("\\?", "g"));
     const q = operand && operand[0] === "?" ? "&" : "?";
-    const request = `${url}/${
-      this.stockSymbol
-    }/${params}${q}token=${this.setToken(this.publishable)}`;
+    const pk = `token=${this.setToken(this.publishable)}`;
+    const request = `${url}/${this.stockSymbol}/${params}${q}${pk}`;
 
     if (this.datatype === "deep") {
-      const request = `${url}/${params}?symbols=${
-        this.stockSymbol
-      }&token=${this.setToken(this.publishable)}`;
+      const request = `${url}/${params}?symbols=${this.stockSymbol}&${pk}`;
       this.datatype = "stock";
       this.sandbox && console.log(request);
       return request;
@@ -105,30 +120,41 @@ export default class IEXCloudClient {
     if (this.datatype === "stock/market/batch") {
       const request = `${url}?symbols=${this.stockSymbols.map(
         symbol => symbol
-      )}&types=${params}&token=${this.setToken(this.publishable)}`;
+      )}&types=${params}&${pk}`;
       this.datatype = "stock";
       this.sandbox && console.log(request);
       return request;
     }
 
     if (this.datatype === "stats") {
-      const request = `${url}/${params}${q}token=${this.setToken(
-        this.publishable
-      )}`;
+      const request = `${url}/${params}${q}${pk}}`;
       this.datatype = "stock";
       this.sandbox && console.log(request);
       return request;
     }
 
     if (this.datatype === "tops/last" || this.datatype === "stock/market") {
-      const request = `${url}/${params}${q}token=${this.setToken(
-        this.publishable
-      )}`;
-
+      const request = `${url}/${params}${q}${pk}`;
       this.datatype = "stock";
       this.sandbox && console.log(request);
       return request;
     }
+
+    if (this.datatype === "crypto") {
+      const request = `${url}/${this.cryptoCurrency}/${params}${q}${pk}`;
+      this.datatype = "stock";
+      this.sandbox && console.log(request);
+      return request;
+    }
+
+    if (this.datatype === "search") {
+      const request = `${url}/${params}${q}${pk}`;
+      console.log(request);
+      this.datatype = "stock";
+      this.sandbox && console.log(request);
+      return request;
+    }
+
     this.sandbox && console.log(request);
     return request;
   };
@@ -389,7 +415,7 @@ This endpoint provides social sentiment data from StockTwits. Data can be viewed
     return this.request(`sentiment/${type}${date ? "/" + date : ""}`);
   };
 
-  public quote = (field = ""): Promise<iex.Quote> => {
+  public quote = (field = ""): Promise<iex.Quote | iex.CryptoQuote> => {
     return this.request(`quote/${field ? field : ""}`);
   };
 
