@@ -25,11 +25,8 @@ iex.historicalStats("recent").then(res => console.log(res));
 iex
   .symbol("AAPL")
   .recommendationTrends()
-  .then(res => console.log(res.));
+  .then(res => console.log(res));
 
-iex
-.tops("aapl", "googl", "amzn")
-.then(res => console.log(res));
-
+iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
 
 iex.search("Microsoft").then(res => console.log(res));
