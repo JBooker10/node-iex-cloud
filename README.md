@@ -43,8 +43,8 @@ The first method takes in a company symbol (an abbreviation used to uniquely ide
 ### Stocks
 
 ```javascript
+// stock/google/financials?period=annual
 iex
-  // stock/google/financials?period=annual
   .symbol("googl")
   .financials("quarterly")
   .then(res => console.log(res));
@@ -82,8 +82,8 @@ iex
   .quote()
   .then(res => console.log(res));
 
+// crypto/ethusd/quote
 iex
-  // crypto/ethusd/quote
   .crypto("ethusd")
   .quote()
   .then(res => console.log(res));
@@ -126,7 +126,7 @@ iex
 - [x] `shortInterest(date?: string)`
 - [x] `volumeByVenue`
 
-### Search Company with Results Sorted by Relevancy
+### Search Companies
 
 ```javascript
 // search/microsoft
@@ -134,6 +134,33 @@ iex.search("microsoft").then(res => console.log(res));
 
 // search/google
 iex.search("google").then(res => console.log(res));
+```
+
+### Advance Searching
+
+To retreive a company's stock data using a company's full name, use the search method to
+search for the `companyName` then access the first index to grab the most relevant `symbol`
+
+```javascript
+// search/facebook
+iex.search("facebook").then(res =>
+  // search/fb/company
+  iex
+    .symbol(res[0].symbol)
+    .company()
+    .then(res => console.log(res))
+);
+```
+
+```javascript
+// search/international%20busines%20machines
+iex.search("international business machines").then(res =>
+  // search/ibm/balancesheet
+  iex
+    .symbol(res[0].symbol)
+    .balanceSheet("annual")
+    .then(res => console.log(res))
+);
 ```
 
 ### Market
