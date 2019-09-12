@@ -83,8 +83,8 @@ iex
   .then(res => console.log(res));
 
 iex
-  .crypto("ethusd")
   // crypto/ethusd/quote
+  .crypto("ethusd")
   .quote()
   .then(res => console.log(res));
 ```
@@ -129,8 +129,10 @@ iex
 ### Search Company with Results Sorted by Relevancy
 
 ```javascript
+// search/microsoft
 iex.search("microsoft").then(res => console.log(res));
 
+// search/google
 iex.search("google").then(res => console.log(res));
 ```
 
