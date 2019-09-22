@@ -1,14 +1,17 @@
 const { IEXCloudClient } = require("./../lib");
-const fetch = require("node-fetch");
+const axios = require("axios");
+
 require("dotenv").config();
 
-const iex = new IEXCloudClient(fetch, {
+const iex = new IEXCloudClient(axios, {
   sandbox: true,
   publishable: process.env.PUBLISHABLE,
   version: "stable"
 });
 
-iex.market("list/mostactive").then(res => console.log(res));
+// iex.market("list/mostactive").then(res => console.log(res));
+
+iex.forex({ from: "EUR", to: "USD" }).then(res => console.log(res));
 
 iex
   .symbol("googl")

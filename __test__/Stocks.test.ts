@@ -6,9 +6,9 @@ const iex = new IEXCloudClient(fetch, config);
 
 test("Company", () => {
   return iex
-    .symbol("AAPL")
+    .symbol("GOOGL")
     .company()
-    .then(res => expect(res).toHaveProperty("symbol"));
+    .then(res => expect(res).toHaveProperty("companyName"));
 });
 
 test("Book", () => {
@@ -20,23 +20,23 @@ test("Book", () => {
 
 test("Balance Sheet", () => {
   return iex
-    .symbol("AAPL")
+    .symbol("FB")
     .balanceSheet("quarterly")
     .then(res => expect(res).toHaveProperty("balancesheet"));
 });
 
 test("Deep Data", () => {
   return iex
-    .symbol("AAPL")
+    .symbol("MSFT")
     .deep("book")
     .then(res => expect(res).toMatchObject({}));
 });
 
 test("Ceo Compensation", () => {
   return iex
-    .symbol("AAPL")
+    .symbol("NFLX")
     .ceoCompensation()
-    .then(res => expect(res).toHaveProperty("symbol"));
+    .then(res => expect(res).toHaveProperty("salary"));
 });
 
 test("Batch Request", () => {
@@ -57,13 +57,13 @@ test("Estimates", () => {
   return iex
     .symbol("googl")
     .estimates()
-    .then(res => expect(res).toHaveProperty("symbol"));
+    .then(res => expect(res).toHaveProperty("estimates"));
 });
 
 test("Batch Request and Symbols", () => {
   return iex
     .symbols("googl, amzn, fb")
-    .batch("company", "balance-sheet", "cash-flow", "estimates")
+    .batch("company", "news", "cash-flow", "logo")
     .then(res => expect(res).toHaveProperty("GOOGL"));
 });
 

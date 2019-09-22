@@ -1,5 +1,8 @@
 # node-iex-cloud
 
+[![Build status](https://ci.appveyor.com/api/projects/status/pjxh5g91jpbh7t84?svg=true)](https://www.npmjs.com/package/node-iex-cloud)
+[![install size](https://packagephobia.now.sh/badge?p=node-iex-cloud)](https://packagephobia.now.sh/result?p=node-iex-cloud)
+
 See IEX API [Documentation](https://iexcloud.io/docs/api) for more information.
 
 ## Installation and Usage
@@ -12,21 +15,31 @@ ES6+
 
 ```javascript
 import { IEXCloudClient } from "node-iex-cloud";
-// import promise base library
-import fetch from "node-fetch";
+```
+
+import a promise based HTTP Client to use along side `node-iex-cloud`. Node-iex-cloud supports both `node-fetch` and `axios`
+
+```javascript
+// import a promise base library
+import fetch from "node-fetch"; // or
+import axios from "axios";
 ```
 
 common.js
 
 ```javascript
 const { IEXCloudClient } = require("node-iex-cloud");
-// import promise base library
-const fetch = require("node-fetch");
+```
+
+```javascript
+// import a promise base library
+const fetch = require("node-fetch"); // or
+const axios = require("axios");
 ```
 
 ## Configuration and Setup
 
-IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data ) MAKE SURE PUBLIC KEY & NOT PRIVATE KEY IS BEING USED as it is prefixed with: `"pk_"`
+IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data ) MAKE SURE PUBLIC KEY & NOT SECRET KEY IS BEING USED as it is prefixed with: `"pk_"`
 
 ```javascript
 const iex = new IEXCloudClient(fetch, {
@@ -89,6 +102,13 @@ iex
   .then(res => console.log(res));
 ```
 
+### Exchange Rates
+
+```javascript
+// fx/rate/YEN/USD
+iex.forex({ from: "YEN", to: "USD" }).then(res => console.log(res));
+```
+
 ### Available Methods
 
 - [x] `balanceSheet(period?)`
@@ -126,7 +146,9 @@ iex
 - [x] `shortInterest(date?: string)`
 - [x] `volumeByVenue`
 
-### Search Companies [Only included with paid subscription plans](https://iexcloud.io/docs/api/#search)
+### Search Companies
+
+[Only included with paid subscription plans](https://iexcloud.io/docs/api/#search)
 
 ```javascript
 // search/microsoft
@@ -136,7 +158,9 @@ iex.search("microsoft").then(res => console.log(res));
 iex.search("google").then(res => console.log(res));
 ```
 
-### Advance Searching [Only included with paid subscription plans](https://iexcloud.io/docs/api/#search)
+### Advance Searching
+
+[Only included with paid subscription plans](https://iexcloud.io/docs/api/#search)
 
 To retreive a company's stock data using a company's full name, use the search method to
 search for the `companyName` then access the first index to grab the most relevant `symbol`

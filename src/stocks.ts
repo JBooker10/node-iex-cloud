@@ -82,6 +82,12 @@ export default class IEXCloudClient {
     return this;
   };
 
+  /** This endpoint provides an end of day exchange rate of a given currency pair */
+  public forex = (params: iex.ForexParams): Promise<any> => {
+    this.datatype = "fx";
+    return this.request(`rate/${params.from}/${params.to}`);
+  };
+
   /**  Returns an array of symbols up to the top 10 matches.
    * Results will be sorted for relevancy. Search currently defaults to equities only, where the symbol returned is supported by endpoints listed under the Stocks category.
    * @params search by symbol or security name.
@@ -126,20 +132,6 @@ export default class IEXCloudClient {
       return request;
     }
 
-    if (this.datatype === "stats") {
-      const request = `${url}/${params}${q}${pk}}`;
-      this.datatype = "stock";
-      this.sandbox && console.log(request);
-      return request;
-    }
-
-    if (this.datatype === "tops/last" || this.datatype === "stock/market") {
-      const request = `${url}/${params}${q}${pk}`;
-      this.datatype = "stock";
-      this.sandbox && console.log(request);
-      return request;
-    }
-
     if (this.datatype === "crypto") {
       const request = `${url}/${this.cryptoCurrency}/${params}${q}${pk}`;
       this.datatype = "stock";
@@ -147,9 +139,14 @@ export default class IEXCloudClient {
       return request;
     }
 
-    if (this.datatype === "search") {
+    if (
+      this.datatype === "tops/last" ||
+      this.datatype === "stock/market" ||
+      this.datatype === "fx" ||
+      this.datatype === "stats" ||
+      this.datatype === "search"
+    ) {
       const request = `${url}/${params}${q}${pk}`;
-      console.log(request);
       this.datatype = "stock";
       this.sandbox && console.log(request);
       return request;
@@ -162,56 +159,51 @@ export default class IEXCloudClient {
   private batchParams = (...types: string[]): string => {
     const env = this.sandbox ? "sandbox" : "cloud";
     const url = `https://${env}.iexapis.com/${this.version}/${this.datatype}`;
+    let symbols = `${this.stockSymbols.map(symbol => symbol)}`;
+    let batchTypes = `types=${types.map(
+      (type: any) => type
+    )}&token=${this.setToken(this.publishable)}`;
+    let request;
 
     if (this.datatype === "stock/market/batch") {
-      const request = `${url}/batch?symbols=${this.stockSymbols.map(
-        symbol => symbol
-      )}&types=${types.map((type: any) => type)}&token=${this.setToken(
-        this.publishable
-      )}`;
+      request = `${url}/batch?symbols=${symbols}&${batchTypes}`;
       this.datatype = "stock";
       this.sandbox && console.log(request);
       return request;
     }
 
-    const request = `${url}/${this.stockSymbol}/batch?types=${types.map(
-      (type: any) => type
-    )}&token=${this.setToken(this.publishable)}`;
+    request = `${url}/${this.stockSymbol}/batch?${batchTypes}`;
     this.sandbox && console.log(request);
     return request;
   };
 
-  private request = async (params: string) => {
+  private response = async (req: any, params: any) => {
     try {
-      const res = await this.fetchFunc(this.params(params));
-      const contentType = res.headers.get("content-type");
-      if (contentType === "application/json; charset=utf-8") {
-        return await res.json();
-      }
+      const res = await this.fetchFunc(req(params));
 
-      if (res.status >= 400) {
-        throw new Error(await res.text());
+      if (typeof res.headers.get === "function") {
+        const contentType = res.headers.get("content-type");
+        if (contentType === "application/json; charset=utf-8") {
+          return await res.json();
+        }
+
+        if (res.status >= 400) {
+          throw new Error(await res.text());
+        }
       }
+      return (<any>res).data;
     } catch (err) {
       console.error(err);
     }
   };
 
-  /** batch returns multipe data-types for a give stock symbol */
-  public batch = async (...params: any) => {
-    try {
-      const res = await this.fetchFunc(this.batchParams(params));
-      const contentType = res.headers.get("content-type");
+  private request = (params: string): Promise<any> => {
+    return this.response(this.params, params);
+  };
 
-      if (contentType === "application/json; charset=utf-8") {
-        return await res.json();
-      }
-      if (res.status >= 400) {
-        throw new Error(await res.text());
-      }
-    } catch (err) {
-      console.error(err);
-    }
+  /** batch returns multipe data-types for a give stock symbol */
+  public batch = (...params: any): Promise<any> => {
+    return this.response(this.batchParams, params);
   };
 
   /** returns balance sheet data. Available quarterly or annually with the default being the last available quarter

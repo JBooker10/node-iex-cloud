@@ -16,6 +16,7 @@ export type Period = "annual" | "quarterly";
 export type Last = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type OptionSide = "put" | "call";
 export type StatType = "historical" | "intraday" | "recent" | "records";
+
 export type Range =
   | "max"
   | "5y"
@@ -31,6 +32,13 @@ export type Range =
   | "date"
   | "dynamic"
   | string;
+
+export interface ForexParams {
+  /** valid three character currency code */
+  from: string;
+  /** valid three character currency code */
+  to: string;
+}
 
 export interface ChartParams {
   date?: string;
@@ -813,4 +821,11 @@ export interface Search {
   securityType: string;
   region: string;
   exchange: string;
+}
+
+export interface Forex {
+  date: Date;
+  fromCurrency: string;
+  toCurrency: string;
+  rate: number;
 }
