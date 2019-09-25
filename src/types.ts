@@ -57,6 +57,7 @@ export interface ChartParams {
     Formatted as YYYYMMDD. This can be used for batch calls when range is 1d or date. */
   exactDate?: string;
   range: string;
+  [key: string]: any;
 }
 
 export interface Book {
