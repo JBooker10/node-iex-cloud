@@ -82,7 +82,13 @@ iex
   .symbol("aapl")
   .chart("6m", { chartCloseOnly: true, chartSimplify: true, chartInterval: 2 })
   .then(res => console.log(res));
-```
+
+// Query Charts by date
+iex
+  .symbol("vea")
+  .chart("date", { date: "20190924", chartByDay: true })
+  .then(res => console.log(res));
+``` 
 
 ### Crypto Currencies
 

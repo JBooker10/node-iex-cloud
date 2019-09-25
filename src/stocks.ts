@@ -236,12 +236,25 @@ export default class IEXCloudClient {
     range: iex.Range,
     params: iex.ChartParams
   ): Promise<iex.Chart[] | iex.DynamicChart> => {
+    // if range is 'date' & there's a 'date' param
+    if (range === 'date' && (params && params.date)) {
+      const keys: string[] = Object.keys(params);
+      const paramsString: string = keys.length > 1
+        ? `?${keys.reduce((str: string, key: string, i: number): string => {
+          if (key !== 'date') {
+            return `${str}${key}=${params[key]}${i < keys.length - 1 ? '&' : ''}`
+          }
+          return str;
+        }, '')}`
+        : '';
+      return this.request(`chart/${range}/${params.date}${paramsString}`);
+    }
+
+    // in any other case
     const values = params && Object.entries(params);
-    return this.request(
-      `chart/${range}${
-        params ? "?" + values.map(v => `${v[0]}=${v[1]}`).join("&") : ""
-      }`
-    );
+    return this.request(`chart/${range}${params ? "?" + values.map((
+      v: string[]
+    ) => `${v[0]}=${v[1]}`).join("&") : ""}`);
   };
 
   /**
