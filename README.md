@@ -21,8 +21,7 @@ import a promise based HTTP Client to use along side `node-iex-cloud`. Node-iex-
 
 ```javascript
 // import a promise base library
-import fetch from "node-fetch"; // or
-import axios from "axios";
+import fetch from "node-fetch";
 ```
 
 common.js
@@ -33,8 +32,7 @@ const { IEXCloudClient } = require("node-iex-cloud");
 
 ```javascript
 // import a promise base library
-const fetch = require("node-fetch"); // or
-const axios = require("axios");
+const fetch = require("node-fetch");
 ```
 
 ## Configuration and Setup
@@ -42,7 +40,10 @@ const axios = require("axios");
 IEX Cloud uses a message weighting system to measure usage in message counts, make sure sandbox is enabled to `true` in development to avoid reaching data limits or overages. (Note: when enabling sandbox to true, the publishable key token is automatically prefixed with the letter T and doesn't require changing the existing token to access Test Data ) MAKE SURE PUBLIC KEY & NOT SECRET KEY IS BEING USED as it is prefixed with: `"pk_"`
 
 ```javascript
-const iex = new IEXCloudClient(fetch, {
+import { IEXCloudClient } from "node-iex-cloud";
+import fetch from "node-fetch";
+
+const iex = new IEXCloudClient(axios, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
   version: "stable"
@@ -88,7 +89,7 @@ iex
   .symbol("vea")
   .chart("date", { date: "20190924", chartByDay: true })
   .then(res => console.log(res));
-``` 
+```
 
 ### Crypto Currencies
 
