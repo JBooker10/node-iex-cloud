@@ -43,7 +43,7 @@ IEX Cloud uses a message weighting system to measure usage in message counts, ma
 import { IEXCloudClient } from "node-iex-cloud";
 import fetch from "node-fetch";
 
-const iex = new IEXCloudClient(axios, {
+const iex = new IEXCloudClient(fetch, {
   sandbox: true,
   publishable: "pk_21b4ffeccc6e3cnc1df07467a47231c6",
   version: "stable"
