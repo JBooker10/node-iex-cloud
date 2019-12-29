@@ -7,6 +7,4 @@ class IEXCloud {
     constructor(f: typeof fetch, config: iex.Configuration) {
        this.req = new IEXRequest(f, config)
     }
-
-
 }

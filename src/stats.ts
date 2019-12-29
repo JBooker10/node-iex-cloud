@@ -27,14 +27,12 @@ public intraday = (): Promise<iex.Stats> => {
     return this.req.request(`intraday`);
   };
 
-
 public recent = (): Promise<iex.Stats> => {
     return this.req.request(`recent`);
   };
 
-
 public records = (): Promise<iex.Stats> => {
-    return this.req.request(`recent`);
+    return this.req.request(`records`);
 };
 
 }

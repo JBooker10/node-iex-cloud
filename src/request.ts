@@ -62,11 +62,12 @@ export default class IEXRequest {
         }
     
         if (
-          this.datatype === "tops/last" ||
+          this.datatype === "tops" ||
           this.datatype === "stock/market" ||
           this.datatype === "fx" ||
           this.datatype === "stats" ||
-          this.datatype === "search"
+          this.datatype === "search" ||
+          this.datatype === "time-series"
         ) {
           const request = `${url}/${params}${q}${pk}`;
           this.datatype = "stock";

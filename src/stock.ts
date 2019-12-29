@@ -1,12 +1,25 @@
 
 import IEXRequest from "./request"
+import Deep from "./deep"
 import * as iex from "./types";
+import DataPoints from "./dataPoints";
+import TimeSeries from "./timeSeries"
+import Forex from "./forex";
+
 
 
 class Stock {
     req: IEXRequest
+    iexDeep: Deep
+    datapoints: DataPoints
+    timeseries: TimeSeries
+    iexForex: Forex
     constructor(req: IEXRequest) {
         this.req = req
+        this.iexDeep = new Deep(req)
+        this.datapoints = new DataPoints(req)
+        this.timeseries = new TimeSeries(req)
+        this.iexForex = new Forex(req)
     }
 
   
@@ -24,6 +37,31 @@ class Stock {
     );
   };
 
+    /** batch returns multipe data-types for a give stock symbol */
+    public batch = (...params: any): Promise<any> => {
+        return this.req.response(this.req.batchParams, params);
+      };
+
+   public deep = (): Deep => {
+        this.req.datatype = `deep`;
+        return this.iexDeep;
+    };
+
+    public dataPoints = (): DataPoints => {
+        this.req.datatype = `data-points`;
+        return this.datapoints;
+      };
+
+    public timeSeries = (): TimeSeries => {
+        this.req.datatype = `time-series`;
+        return this.timeseries;
+    };
+
+    public forex = (): Forex => {
+        this.req.datatype = `fx`;
+        return this.iexForex;
+      };
+
   /**
    * returns book value for a given stock
    * `Data Weight: 1 per quote returned`
@@ -32,8 +70,12 @@ class Stock {
     return this.req.request("book");
   };
 
+  /** TOPS provides IEX’s aggregated best quoted bid and offer position in near real time for all securities on IEX’s displayed limit order book. TOPS is ideal for developers needing both quote and trade data. */
+  public tops = (): Promise<any> => {
+      this.req.datatype = "tops"
+    return this.req.request(this.req.stockSymbols ? `?symbols=${this.req.stockSymbols}` : "");
+  };
 
- 
 
   /**
    * Returns adjusted and unadjusted historical data for up to 15 years.
@@ -239,8 +281,6 @@ This endpoint provides social sentiment data from StockTwits. Data can be viewed
   public stats = (stat = ""): Promise<iex.Stats> => {
     return this.req.request(`stats/${stat}`);
   };
-
-
 
   public upcomingEvents = (): Promise<any> => {
     return this.req.request("upcoming-events");
