@@ -11,27 +11,19 @@ class Statistics {
     }
 
 /** Returns daily stats for a given time frame */
-public historicalStats = (
-    params: iex.StatType,
-    date?: string
-  ): Promise<iex.HistoricalStats | iex.Recent[] | iex.IntraDay> => {
-    this.req.datatype = "stats";
-    return this.req.request(`${params ? params : ""}${date ? "/" + date : ""}`);
+public historical = (date?: string): Promise<iex.HistoricalStats> => {
+    return this.req.request(`historical/${date ? "/" + date : ""}`);
   };
 
-public stats = (stat = ""): Promise<iex.Stats> => {
-    return this.req.request(`stats/${stat}`);
-  };
-
-public intraday = (): Promise<iex.Stats> => {
+public intraday = (): Promise<iex.IntraDay> => {
     return this.req.request(`intraday`);
   };
 
-public recent = (): Promise<iex.Stats> => {
+public recent = (): Promise<iex.Recent[]> => {
     return this.req.request(`recent`);
   };
 
-public records = (): Promise<iex.Stats> => {
+public records = (): Promise<iex.Records[]> => {
     return this.req.request(`records`);
 };
 

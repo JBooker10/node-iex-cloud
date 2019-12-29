@@ -104,4 +104,20 @@ test("Market Sector Performance", () => {
   return iex.market().sectorPerformance().then(res => expect(Array.isArray(res)).toBe(true))
 });
 
+test("Reference Data Exchanges", () => {
+  return iex.refData().exchanges().then(res => expect(Array.isArray(res)).toBe(true))
+});
 
+test("Chart", () => {
+  return iex
+  .symbol("aapl")
+  .chart("6m", { chartCloseOnly: true, chartSimplify: true, chartInterval: 2 })
+  .then(res =>  expect(Array.isArray(res)).toBe(true));
+});
+
+
+test("Search By Company Name", () => {
+iex.search("facebook").then(res => res)
+ .then(res => iex.symbol(res[0].symbol).company())
+ .then(res =>  expect(res).toHaveProperty("symbol"))
+})

@@ -57,7 +57,7 @@ class Deep {
 
     /** The Trading status message is used to indicate the current trading status of a security. For IEX-listed securities, IEX acts as the primary market and has the authority to institute a trading halt or trading pause in a security due to news dissemination or regulatory reasons. For non-IEX-listed securities, IEX abides by any regulatory trading halts and trading pauses instituted by the primary or listing market, as applicable. */
     public tradingStatus = (): Promise<any> => {
-        return this.req.request(`trade-breaks`);
+        return this.req.request(`trading-status`);
     };
 }
 

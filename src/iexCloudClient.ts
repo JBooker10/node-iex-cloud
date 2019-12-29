@@ -5,8 +5,8 @@ import Market from "./market"
 import ReferenceData from "./reference"
 import DataPoints from "./dataPoints"
 import Deep from "./deep";
+import TimeSeries from "./timeSeries";
 import Statistics from "./stats";
-import Tops from "./tops";
 
 import IEXRequest from "./request";
 import Forex from "./forex";
@@ -20,7 +20,7 @@ export default class IEXCloudClient {
   private referenceData: ReferenceData
   private datapoints: DataPoints
   private statistics: Statistics
-  private iexTops: Tops
+  private timeseries: TimeSeries
 
   constructor(f: typeof fetch, config: iex.Configuration) {
     this.req = new IEXRequest(f, config)
@@ -31,7 +31,7 @@ export default class IEXCloudClient {
     this.referenceData = new ReferenceData(this.req)
     this.datapoints = new DataPoints(this.req)
     this.statistics = new Statistics(this.req)
-    this.iexTops = new Tops(this.req)
+    this.timeseries = new TimeSeries(this.req)
   }
 
   /**  Takes in a stock symbol, a unique series of letters assigned to a security   */
@@ -85,8 +85,17 @@ export default class IEXCloudClient {
     return this.statistics;
   };
  
-  public timeSeries = (): Tops => {
+  public timeSeries = (): TimeSeries => {
     this.req.datatype = `time-series`;
-    return this.iexTops;
+    return this.timeseries;
   };
+
+       /**  Returns an array of symbols up to the top 10 matches.
+   * Results will be sorted for relevancy. Search currently defaults to equities only, where the symbol returned is supported by endpoints listed under the Stocks category.
+   * @params search by symbol or security name.
+   */
+  public search = (symbol: string): Promise<iex.Search[]> => {
+    this.req.datatype = "search";
+    return this.req.request(symbol);
+    };
 }

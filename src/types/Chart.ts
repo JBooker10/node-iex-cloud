@@ -53,7 +53,7 @@ export default interface Chart {
     /** 
       Formatted as YYYYMMDD. This can be used for batch calls when range is 1d or date. */
     exactDate?: string;
-    range: string;
+    range?: string;
     [key: string]: any;
   }
 

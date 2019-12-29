@@ -9,15 +9,6 @@ class ReferenceData {
         this.req = req
     }
 
-      /**  Returns an array of symbols up to the top 10 matches.
-   * Results will be sorted for relevancy. Search currently defaults to equities only, where the symbol returned is supported by endpoints listed under the Stocks category.
-   * @params search by symbol or security name.
-   */
-    public search = (symbol: string): Promise<iex.Search[]> => {
-    this.req.datatype = "search";
-    return this.req.request(symbol);
-    };
-
     /** This call returns an array of symbols that IEX Cloud supports for API calls. */
     public symbols = () => {
         return this.req.request("symbols")
@@ -46,7 +37,6 @@ class ReferenceData {
     public internationalSymbols = (region: string, exchange: string) => {
         return this.req.request(region ? `region/${region}/symbols` : `exchange/${exchange}/symbols`)
     }
-
 
     /** Returns an array of exchanges. */
     public exchanges = () => {

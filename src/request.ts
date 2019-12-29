@@ -67,7 +67,8 @@ export default class IEXRequest {
           this.datatype === "fx" ||
           this.datatype === "stats" ||
           this.datatype === "search" ||
-          this.datatype === "time-series"
+          this.datatype === "time-series" ||
+          this.datatype === "ref-data"
         ) {
           const request = `${url}/${params}${q}${pk}`;
           this.datatype = "stock";
@@ -107,7 +108,6 @@ export default class IEXRequest {
       response = async (req: any, params: any) => {
         try {
           const res = await this.fetchFunc(req(params));
-    
           if (typeof res.headers.get === "function") {
             const contentType = res.headers.get("content-type");
             if (contentType === "application/json; charset=utf-8") {
