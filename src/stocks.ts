@@ -58,7 +58,7 @@ export default class IEXCloudClient {
   };
 
   /** Time series is the most common type of data available, and consists of a collection of data points over a period of time. Time series data is indexed by a single date field, and can be retrieved by any portion of time. To use this endpoint, you’ll first make a free call to get an inventory of available time series data.  */
-  public timeSeries = (id = "", subkey: string) => {
+  public timeSeries = (id = "", subkey: string): Promise<iex.TimeSeries> => {
     this.datatype = `time-series/${id}`;
     return this.request(`${subkey}`);
   };
@@ -76,7 +76,7 @@ export default class IEXCloudClient {
   };
 
   /** This will a quote for Cryptocurrencies supported by the IEX API. Each element is a standard */
-  public crypto = (crypto: string): IEXCloudClient => {
+  public crypto = (crypto: iex.CryptoCurrency): IEXCloudClient => {
     this.datatype = "crypto";
     this.cryptoCurrency = crypto;
     return this;
@@ -227,6 +227,9 @@ export default class IEXCloudClient {
   public book = (): Promise<iex.Book> => {
     return this.request("book");
   };
+
+
+ 
 
   /**
    * Returns adjusted and unadjusted historical data for up to 15 years.
