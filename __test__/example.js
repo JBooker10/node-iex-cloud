@@ -10,7 +10,7 @@ const iex = new IEXCloudClient(axios, {
 });
 
 
-
+iex.symbol("AAPL").ceoCompensation().then(res => console.log(res))
 
 // iex 
 // .symbol("AAPL")

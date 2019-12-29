@@ -2,7 +2,11 @@ import * as iex from "./types";
 import Crypto from "./crypto";
 import Stock from "./stock"
 import Market from "./market"
-import ReferenceData from "./reference";
+import ReferenceData from "./reference"
+import DataPoints from "./dataPoints"
+import Deep from "./deep";
+import Statistics from "./stats";
+import Tops from "./tops";
 
 import IEXRequest from "./request";
 import Forex from "./forex";
@@ -14,6 +18,10 @@ export default class IEXCloudClient {
   private stockMarket: Market
   private foreignExchange: Forex
   private referenceData: ReferenceData
+  private datapoints: DataPoints
+  private iexDeep: Deep
+  private statistics: Statistics
+  private iexTops: Tops
 
   constructor(f: typeof fetch, config: iex.Configuration) {
     this.req = new IEXRequest(f, config)
@@ -22,6 +30,10 @@ export default class IEXCloudClient {
     this.stockMarket = new Market(this.req)
     this.foreignExchange = new Forex(this.req)
     this.referenceData = new ReferenceData(this.req)
+    this.datapoints = new DataPoints(this.req)
+    this.iexDeep =  new Deep(this.req)
+    this.statistics = new Statistics(this.req)
+    this.iexTops = new Tops(this.req)
   }
 
   /**  Takes in a stock symbol, a unique series of letters assigned to a security   */
@@ -36,7 +48,6 @@ export default class IEXCloudClient {
     this.req.stockSymbols = symbols;
     return this.stock;
   };
-
 
     /**  Takes in a crypto currency   */
   public crypto = (crypto: iex.CryptoCurrency): Crypto => {
@@ -60,6 +71,25 @@ export default class IEXCloudClient {
     return this.referenceData;
   };
 
+  public dataPoints = (): DataPoints => {
+    this.req.datatype = `data-points`;
+    return this.datapoints;
+  };
+
+  public deep = (): Deep => {
+    this.req.datatype = `deep`;
+    return this.iexDeep;
+  };
+
+  public stats = (): Statistics => {
+    this.req.datatype = `stats`;
+    return this.statistics;
+  };
+  
+  public tops = (): Tops => {
+    this.req.datatype = `tops`;
+    return this.iexTops;
+  };
   
 
 

@@ -9,7 +9,7 @@ class Forex {
         this.req = req
     }
 
-        /** This endpoint provides an end of day exchange rate of a given currency pair */
+ /** This endpoint provides an end of day exchange rate of a given currency pair */
   public rate = (params: iex.ForexParams): Promise<any> => {
     return this.req.request(`rate/${params.from}/${params.to}`);
   };
