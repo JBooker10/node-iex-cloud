@@ -1,2 +1,2 @@
-import IEXCloudClient from "./stocks";
+import IEXCloudClient from "./iexCloudClient";
 export { IEXCloudClient };

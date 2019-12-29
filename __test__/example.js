@@ -9,35 +9,36 @@ const iex = new IEXCloudClient(axios, {
   version: "stable"
 });
 
-// iex.market("list/mostactive").then(res => console.log(res));
 
-// iex.forex({ from: "EUR", to: "USD" }).then(res => console.log(res));
+iex.refData().exchanges().then(res => console.log(res))
 
 iex
-  .symbol("vea")
-  .chart("date", { date: "20190924", chartByDay: true })
+  .symbol("aapl")
+  .chart("6m", { chartCloseOnly: true, chartSimplify: true, chartInterval: 2 })
   .then(res => console.log(res));
 
-// iex
-//   .symbol("googl")
-//   .company()
-//   .then(res => console.log(res));
+iex.search("facebook").then(res => res)
+ .then(res => iex.symbol(res[0].symbol).company())
+ .then(res => console.log(res))
 
-// iex
-//   .symbols("googl,amzn,fb")
-//   .price()
-//   .then(res => console.log(res));
 
-// iex.historicalStats("recent").then(res => console.log(res));
 
-// iex
-//   .symbol("AAPL")
-//   .recommendationTrends()
-//   .then(res => console.log(res));
+iex.symbols("USDGPB", "USDJPY")
+    .forex()
+    .convert({ amount: 2000 })
+    .then(res => console.log(res))
 
-// iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
 
-// iex
-//   .search("international business machines")
-//   .then(res => iex.symbol(res[0].symbol).company())
-//   .then(res => console.log(res));
+iex.symbols("USDGPB", "USDJPY")
+   .forex()
+   .historical({ last: 5 })
+   .then(res => console.log(res))
+
+
+iex.market().todayEarnings().then(res => console.log(res))
+
+iex.stats().records().then(res => console.log(res))
+
+iex.market().sectorPerformance().then(res => console.log(res))
+
+iex.symbols("AAPL", "GOOGL").timeSeries().advancedReturnOnCapital()

@@ -109,49 +109,62 @@ iex
   .then(res => console.log(res));
 ```
 
-### Exchange Rates
+### Forex / Currencies
 
 ```javascript
-// fx/rate/YEN/USD
-iex.forex({ from: "YEN", to: "USD" }).then(res => console.log(res));
+
+// stable/fx/convert?symbols=USDGPB,USDJPY&amount=2000&
+iex.symbols("USDGPB", "USDJPY")
+    .forex()
+    .convert({ amount: 2000 })
+    .then(res => console.log(res))
+
+// stable/fx/historical?symbols=USDGPB,USDJPY&last=5
+iex.symbols("USDGPB", "USDJPY")
+   .forex()
+   .historical({ last: 5 })
+   .then(res => console.log(res))
 ```
+
+
 
 ### Available Methods
 
-- [x] `balanceSheet(period?)`
-- [x] `book`
-- [x] `chart(range?: string, params?: object)`
-- [x] `cashFlow(period?: string, last?: number)`
-- [x] `ceoCompensation`
-- [x] `company`
-- [x] `delayedQuote`
-- [x] `dividends(range?)`
-- [x] `earnings(last, field)`
-- [x] `estimates`
-- [x] `financials(period?: string)`
-- [x] `news(last?: number)`
-- [x] `fundOwnership`
-- [x] `income(period?: string, last?: number)`
-- [x] `insiderRoster`
-- [x] `insiderSummary`
-- [x] `insiderTransactions`
-- [x] `institutionalOwnership`
-- [x] `intradayPrices(params?: object)`
-- [x] `logo`
-- [x] `largestTrades`
-- [x] `options(expiration?: string, optionSide?: string)`
-- [x] `peers`
-- [x] `previous`
-- [x] `price`
-- [x] `priceTarget`
-- [x] `ohlc`
-- [x] `sentiment(type?: string, date?: string)`
-- [x] `quote(field: string)`
-- [x] `recommendationTrends`
-- [x] `stats(stat?: string)`
-- [x] `splits(range)`
-- [x] `shortInterest(date?: string)`
-- [x] `volumeByVenue`
+#### Stock 
+- `balanceSheet(period?)`
+- `book`
+- `chart(range?: string, params?: object)`
+- `cashFlow(period?: string, last?: number)`
+- `ceoCompensation`
+- `company`
+- `delayedQuote`
+- `dividends(range?)`
+- `earnings(last, field)`
+- `estimates`
+- `financials(period?: string)`
+- `news(last?: number)`
+- `fundOwnership`
+- `income(period?: string, last?: number)`
+- `insiderRoster`
+- `insiderSummary`
+- `insiderTransactions`
+- `institutionalOwnership`
+- `intradayPrices(params?: object)`
+- `logo`
+- `largestTrades`
+- `options(expiration?: string, optionSide?: string)`
+- `peers`
+- `previous`
+- `price`
+- `priceTarget`
+- `ohlc`
+- `sentiment(type?: string, date?: string)`
+- `quote(field: string)`
+- `recommendationTrends`
+- `stats(stat?: string)`
+- `splits(range)`
+- `shortInterest(date?: string)`
+- `volumeByVenue`
 
 ### Search Companies
 
@@ -174,8 +187,7 @@ search for the `companyName` then access the first index to grab the most releva
 
 ```javascript
 // search/facebook
-iex.search("facebook").then(res =>
-  // stock/fb/company
+iex.search("facebook").then(res => res)
  .then(res => iex.symbol(res[0].symbol).company())
  .then(res => console.log(res));
 ```
@@ -191,23 +203,36 @@ iex
 ```
 
 ### Market
-
 ```javascript
 // stock/market/today-earnings
-iex.market("today-earnings").then(res => console.log(res));
-```
+  iex.market()
+  .todayEarnings()
+  .then(res => console.log(res))
 
-### Data Points
-
-Data points are available per symbol and return individual plain text values.
-
-```javascript
-// data-points/aapl/quote-latestprice
-iex
-  .symbol("aapl")
-  .dataPoints("quote-latestprice")
+// stock/market/sector-performance
+   iex
+  .market()
+  .sectorPerformance()
   .then(res => console.log(res));
 ```
+
+### Time Series 
+
+
+```javascript
+// time-series/advanced_distribution
+iex
+  .symbols("AAPL", "GOOGL")
+  .timeSeries()
+  .advancedDistribution()
+
+iex
+  .symbols("AAPL", "GOOGL")
+  .timeSeries()
+  .advancedReturnOnCapital()
+```
+
+
 
 ### Batch Symbols
 
@@ -257,15 +282,38 @@ Last provides trade data for executions on IEX.
 
 ```javascript
 // tops/last?symbols=aapl,googl,amzn
-iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
+iex.tops("aapl", "googl", "amzn")
+   .then(res => console.log(res));
 ```
 
-### IEX Historical Stats
+### IEX  Stats
 
 ```javascript
 // stats/intraday
-iex.historicalStats("intraday").then(res => console.log(res));
+iex.stats()
+   .intraday()
+   .then(res => console.log(res))
+
+// stats/historical
+iex.stats()
+   .historical()
+   .then(res => console.log(res))
+
+// stats/records
+iex.stats()
+   .records()
+   .then(res => console.log(res))
 ```
+
+### IEX Market Info
+
+```javascript
+// stable/stock/market/sector-performance
+iex.market()
+   .sectorPerformance()
+   .then(res => console.log(res))
+```
+
 
 ### IEX Deep
 
@@ -273,10 +321,28 @@ DEEP is used to receive real-time depth of book quotations direct from IEX.
 
 ```javascript
 // deep/trading-status?symbols=msft
-iex
-  .symbol("msft")
-  .deep("trading-status")
-  .then(res => console.log(res));
+iex.symbol("msft")
+   .deep()
+   .tradingStatus()
+   .then(res => console.log(res))
+
+// deep/book?symbols=msft
+iex.symbol("msft")
+   .deep()
+   .book()
+   .then(res => console.log(res))
+
+// deep/trades?symbols=msf
+iex.symbol("msft")
+   .deep()
+   .trades()
+   .then(res => console.log(res))
+
+// deep/trade-breaks?symbols=msft
+iex.symbol("msft")
+   .deep()
+   .tradeBreaks()
+   .then(res => console.log(res))
 ```
 
 ### SSE Streaming

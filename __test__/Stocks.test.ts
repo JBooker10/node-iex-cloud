@@ -28,7 +28,8 @@ test("Balance Sheet", () => {
 test("Deep Data", () => {
   return iex
     .symbol("MSFT")
-    .deep("book")
+    .deep()
+    .book()
     .then(res => expect(res).toMatchObject({}));
 });
 
@@ -44,13 +45,6 @@ test("Batch Request", () => {
     .symbol("googl")
     .batch("company", "balance-sheet", "cash-flow", "estimates")
     .then(res => expect(res).toHaveProperty("company.symbol"));
-});
-
-test.skip("Today Earnings", () => {
-  return iex
-    .symbol("googl")
-    .market("today-earnings")
-    .then(res => expect(res).toHaveProperty("amc"));
 });
 
 test("Estimates", () => {
@@ -80,3 +74,50 @@ test("Crypto currencies quote", () => {
     .quote()
     .then(res => expect(res).toHaveProperty("primaryExchange"));
 });
+
+test("Time Series Advanced Dividends", () => {
+  return iex.symbol("AAPL")
+   .timeSeries()
+   .advancedDividends()
+   .then(res => expect(Array.isArray(res)).toBe(true))
+});
+
+test("Forex Latest", () => {
+  return iex.symbols("USDGPB", "USDJPY")
+   .forex()
+   .latest()
+   .then(res => expect(Array.isArray(res)).toBe(true))
+});
+
+test("Forex Historical", () => {
+  return iex.symbols("USDGPB", "USDJPY")
+   .forex()
+   .historical({ last: 5 })
+   .then(res => expect(Array.isArray(res)).toBe(true))
+});
+
+test("Tops", () => {
+  return iex.tops().then(res => expect(Array.isArray(res)).toBe(true))
+});
+
+test("Market Sector Performance", () => {
+  return iex.market().sectorPerformance().then(res => expect(Array.isArray(res)).toBe(true))
+});
+
+test("Reference Data Exchanges", () => {
+  return iex.refData().exchanges().then(res => expect(Array.isArray(res)).toBe(true))
+});
+
+test("Chart", () => {
+  return iex
+  .symbol("aapl")
+  .chart("6m", { chartCloseOnly: true, chartSimplify: true, chartInterval: 2 })
+  .then(res =>  expect(Array.isArray(res)).toBe(true));
+});
+
+
+test("Search By Company Name", () => {
+iex.search("facebook").then(res => res)
+ .then(res => iex.symbol(res[0].symbol).company())
+ .then(res =>  expect(res).toHaveProperty("symbol"))
+})
