@@ -1,29 +1,25 @@
-
-import IEXRequest from "./request"
-import Deep from "./deep"
+import IEXRequest from "./request";
+import Deep from "./deep";
 import * as iex from "./types";
 import DataPoints from "./dataPoints";
-import TimeSeries from "./timeSeries"
+import TimeSeries from "./timeSeries";
 import Forex from "./forex";
 
-
-
 class Stock {
-    req: IEXRequest
-    iexDeep: Deep
-    datapoints: DataPoints
-    timeseries: TimeSeries
-    iexForex: Forex
-    constructor(req: IEXRequest) {
-        this.req = req
-        this.iexDeep = new Deep(req)
-        this.datapoints = new DataPoints(req)
-        this.timeseries = new TimeSeries(req)
-        this.iexForex = new Forex(req)
-    }
+  req: IEXRequest;
+  iexDeep: Deep;
+  datapoints: DataPoints;
+  timeseries: TimeSeries;
+  iexForex: Forex;
+  constructor(req: IEXRequest) {
+    this.req = req;
+    this.iexDeep = new Deep(req);
+    this.datapoints = new DataPoints(req);
+    this.timeseries = new TimeSeries(req);
+    this.iexForex = new Forex(req);
+  }
 
-  
-     /** returns balance sheet data. Available quarterly or annually with the default being the last available quarter
+  /** returns balance sheet data. Available quarterly or annually with the default being the last available quarter
    * `Data Weight: 3000`
    */
   public balanceSheet = (
@@ -37,30 +33,30 @@ class Stock {
     );
   };
 
-    /** batch returns multipe data-types for a give stock symbol */
-    public batch = (...params: any): Promise<any> => {
-        return this.req.response(this.req.batchParams, params);
-      };
+  /** batch returns multipe data-types for a give stock symbol */
+  public batch = (...params: any): Promise<any> => {
+    return this.req.response(this.req.batchParams, params);
+  };
 
-   public deep = (): Deep => {
-        this.req.datatype = `deep`;
-        return this.iexDeep;
-    };
+  public deep = (): Deep => {
+    this.req.datatype = `deep`;
+    return this.iexDeep;
+  };
 
-    public dataPoints = (): DataPoints => {
-        this.req.datatype = `data-points`;
-        return this.datapoints;
-      };
+  public dataPoints = (): DataPoints => {
+    this.req.datatype = `data-points`;
+    return this.datapoints;
+  };
 
-    public timeSeries = (): TimeSeries => {
-        this.req.datatype = `time-series`;
-        return this.timeseries;
-    };
+  public timeSeries = (): TimeSeries => {
+    this.req.datatype = `time-series`;
+    return this.timeseries;
+  };
 
-    public forex = (): Forex => {
-        this.req.datatype = `fx`;
-        return this.iexForex;
-      };
+  public forex = (): Forex => {
+    this.req.datatype = `fx`;
+    return this.iexForex;
+  };
 
   /**
    * returns book value for a given stock
@@ -72,10 +68,11 @@ class Stock {
 
   /** TOPS provides IEX’s aggregated best quoted bid and offer position in near real time for all securities on IEX’s displayed limit order book. TOPS is ideal for developers needing both quote and trade data. */
   public tops = (): Promise<any> => {
-      this.req.datatype = "tops"
-    return this.req.request(this.req.stockSymbols ? `?symbols=${this.req.stockSymbols}` : "");
+    this.req.datatype = "tops";
+    return this.req.request(
+      this.req.stockSymbols ? `?symbols=${this.req.stockSymbols}` : ""
+    );
   };
-
 
   /**
    * Returns adjusted and unadjusted historical data for up to 15 years.
@@ -86,24 +83,31 @@ class Stock {
     params: iex.ChartParams
   ): Promise<iex.Chart[] | iex.DynamicChart> => {
     // if range is 'date' & there's a 'date' param
-    if (range === 'date' && (params && params.date)) {
+    if (range === "date" && params && params.date) {
       const keys: string[] = Object.keys(params);
-      const paramsString: string = keys.length > 1
-        ? `?${keys.reduce((str: string, key: string, i: number): string => {
-          if (key !== 'date') {
-            return `${str}${key}=${params[key]}${i < keys.length - 1 ? '&' : ''}`
-          }
-          return str;
-        }, '')}`
-        : '';
+      const paramsString: string =
+        keys.length > 1
+          ? `?${keys.reduce((str: string, key: string, i: number): string => {
+              if (key !== "date") {
+                return `${str}${key}=${params[key]}${
+                  i < keys.length - 1 ? "&" : ""
+                }`;
+              }
+              return str;
+            }, "")}`
+          : "";
       return this.req.request(`chart/${range}/${params.date}${paramsString}`);
     }
 
     // in any other case
     const values = params && Object.entries(params);
-    return this.req.request(`chart/${range}${params ? "?" + values.map((
-      v: string[]
-    ) => `${v[0]}=${v[1]}`).join("&") : ""}`);
+    return this.req.request(
+      `chart/${range}${
+        params
+          ? "?" + values.map((v: string[]) => `${v[0]}=${v[1]}`).join("&")
+          : ""
+      }`
+    );
   };
 
   /**
@@ -269,7 +273,7 @@ This endpoint provides social sentiment data from StockTwits. Data can be viewed
     return this.req.request(`sentiment/${type}${date ? "/" + date : ""}`);
   };
 
-  public quote = (field = ""): Promise<iex.Quote | iex.CryptoQuote> => {
+  public quote = (field = ""): Promise<iex.Quote> => {
     return this.req.request(`quote/${field ? field : ""}`);
   };
 
@@ -298,7 +302,7 @@ This endpoint provides social sentiment data from StockTwits. Data can be viewed
     return this.req.request("upcoming-splits");
   };
 
-  public upcomingIPOs= (): Promise<any> => {
+  public upcomingIPOs = (): Promise<any> => {
     return this.req.request("upcoming-ipos");
   };
 

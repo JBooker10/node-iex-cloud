@@ -1,7 +1,6 @@
 # node-iex-cloud
 
-[![Build status](https://ci.appveyor.com/api/projects/status/pjxh5g91jpbh7t84?svg=true)](https://www.npmjs.com/package/node-iex-cloud)
-[![install size](https://packagephobia.now.sh/badge?p=node-iex-cloud)](https://packagephobia.now.sh/result?p=node-iex-cloud)
+[![Build status](https://ci.appveyor.com/api/projects/status/pjxh5g91jpbh7t84?svg=true)](https://www.npmjs.com/package/node-iex-cloud) [![install size](https://packagephobia.now.sh/badge?p=node-iex-cloud)](https://packagephobia.now.sh/result?p=node-iex-cloud)
 
 See IEX API [Documentation](https://iexcloud.io/docs/api) for more information.
 
@@ -112,25 +111,25 @@ iex
 ### Forex / Currencies
 
 ```javascript
-
 // stable/fx/convert?symbols=USDGPB,USDJPY&amount=2000&
-iex.symbols("USDGPB", "USDJPY")
-    .forex()
-    .convert({ amount: 2000 })
-    .then(res => console.log(res))
+iex
+  .symbols("USDGPB", "USDJPY")
+  .forex()
+  .convert({ amount: 2000 })
+  .then(res => console.log(res));
 
 // stable/fx/historical?symbols=USDGPB,USDJPY&last=5
-iex.symbols("USDGPB", "USDJPY")
-   .forex()
-   .historical({ last: 5 })
-   .then(res => console.log(res))
+iex
+  .symbols("USDGPB", "USDJPY")
+  .forex()
+  .historical({ last: 5 })
+  .then(res => console.log(res));
 ```
-
-
 
 ### Available Methods
 
-#### Stock 
+#### Stock
+
 - `balanceSheet(period?)`
 - `book`
 - `chart(range?: string, params?: object)`
@@ -182,14 +181,15 @@ iex.search("google").then(res => console.log(res));
 
 [Only included with paid subscription plans](https://iexcloud.io/docs/api/#search)
 
-To retreive a company's stock data using a company's full name, use the search method to
-search for the `companyName` then access the first index to grab the most relevant `symbol`
+To retreive a company's stock data using a company's full name, use the search method to search for the `companyName` then access the first index to grab the most relevant `symbol`
 
 ```javascript
 // search/facebook
-iex.search("facebook").then(res => res)
- .then(res => iex.symbol(res[0].symbol).company())
- .then(res => console.log(res));
+iex
+  .search("facebook")
+  .then(res => res)
+  .then(res => iex.symbol(res[0].symbol).company())
+  .then(res => console.log(res));
 ```
 
 ```javascript
@@ -203,21 +203,22 @@ iex
 ```
 
 ### Market
+
 ```javascript
 // stock/market/today-earnings
-  iex.market()
+iex
+  .market()
   .todayEarnings()
-  .then(res => console.log(res))
+  .then(res => console.log(res));
 
 // stock/market/sector-performance
-   iex
+iex
   .market()
   .sectorPerformance()
   .then(res => console.log(res));
 ```
 
-### Time Series 
-
+### Time Series
 
 ```javascript
 // time-series/advanced_distribution
@@ -225,14 +226,14 @@ iex
   .symbols("AAPL", "GOOGL")
   .timeSeries()
   .advancedDistribution()
+  .then(res => console.log(res));
 
 iex
   .symbols("AAPL", "GOOGL")
   .timeSeries()
   .advancedReturnOnCapital()
+  .then(res => console.log(res));
 ```
-
-
 
 ### Batch Symbols
 
@@ -282,38 +283,40 @@ Last provides trade data for executions on IEX.
 
 ```javascript
 // tops/last?symbols=aapl,googl,amzn
-iex.tops("aapl", "googl", "amzn")
-   .then(res => console.log(res));
+iex.tops("aapl", "googl", "amzn").then(res => console.log(res));
 ```
 
-### IEX  Stats
+### IEX Stats
 
 ```javascript
 // stats/intraday
-iex.stats()
-   .intraday()
-   .then(res => console.log(res))
+iex
+  .stats()
+  .intraday()
+  .then(res => console.log(res));
 
 // stats/historical
-iex.stats()
-   .historical()
-   .then(res => console.log(res))
+iex
+  .stats()
+  .historical()
+  .then(res => console.log(res));
 
 // stats/records
-iex.stats()
-   .records()
-   .then(res => console.log(res))
+iex
+  .stats()
+  .records()
+  .then(res => console.log(res));
 ```
 
 ### IEX Market Info
 
 ```javascript
 // stable/stock/market/sector-performance
-iex.market()
-   .sectorPerformance()
-   .then(res => console.log(res))
+iex
+  .market()
+  .sectorPerformance()
+  .then(res => console.log(res));
 ```
-
 
 ### IEX Deep
 
@@ -321,28 +324,32 @@ DEEP is used to receive real-time depth of book quotations direct from IEX.
 
 ```javascript
 // deep/trading-status?symbols=msft
-iex.symbol("msft")
-   .deep()
-   .tradingStatus()
-   .then(res => console.log(res))
+iex
+  .symbol("msft")
+  .deep()
+  .tradingStatus()
+  .then(res => console.log(res));
 
 // deep/book?symbols=msft
-iex.symbol("msft")
-   .deep()
-   .book()
-   .then(res => console.log(res))
+iex
+  .symbol("msft")
+  .deep()
+  .book()
+  .then(res => console.log(res));
 
 // deep/trades?symbols=msf
-iex.symbol("msft")
-   .deep()
-   .trades()
-   .then(res => console.log(res))
+iex
+  .symbol("msft")
+  .deep()
+  .trades()
+  .then(res => console.log(res));
 
 // deep/trade-breaks?symbols=msft
-iex.symbol("msft")
-   .deep()
-   .tradeBreaks()
-   .then(res => console.log(res))
+iex
+  .symbol("msft")
+  .deep()
+  .tradeBreaks()
+  .then(res => console.log(res));
 ```
 
 ### SSE Streaming
