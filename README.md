@@ -72,6 +72,14 @@ iex
 ```
 
 ```javascript
+// stock/aapl/cash-flow
+iex
+  .symbol("aapl")
+  .cashFlow("annual", 3)
+  .then(res => console.log(res));
+```
+
+```javascript
 // Query Charts
 iex
   .symbol("googl")

@@ -117,7 +117,7 @@ class Stock {
    */
   public cashFlow = (
     period: iex.Period = "quarterly",
-    { last = 1 }
+    last: iex.Last
   ): Promise<iex.CashFlow> => {
     return this.req.request(`cash-flow?period=${period}&last=${last}`);
   };
@@ -229,7 +229,7 @@ class Stock {
 
   /** Returns end of day options data */
   public options = (
-    expiration = "",
+    expiration: Date | string = "",
     optionSide?: iex.OptionSide
   ): Promise<string[] | any> => {
     return this.req.request(
@@ -267,8 +267,8 @@ class Stock {
   /** 
 This endpoint provides social sentiment data from StockTwits. Data can be viewed as a daily value, or by minute for a given date. */
   public sentiment = (
-    type = "daily",
-    date = null
+    type: iex.SentimentType = "daily",
+    date: Date | null = null
   ): Promise<iex.DailySentiment[] | iex.MinuteSentiment[]> => {
     return this.req.request(`sentiment/${type}${date ? "/" + date : ""}`);
   };
@@ -310,7 +310,9 @@ This endpoint provides social sentiment data from StockTwits. Data can be viewed
     return this.req.request(`splits/${range}`);
   };
 
-  public shortInterest = (date = ""): Promise<iex.ShortInterest[]> => {
+  public shortInterest = (
+    date: Date | string = ""
+  ): Promise<iex.ShortInterest[]> => {
     return this.req.request(`short-interest/${date}`);
   };
 

@@ -11,7 +11,11 @@ import Financials from "./types/Financials";
 import Forex, { ForexParams } from "./types/Forex";
 import FundOwnership from "./types/Forex";
 import Income from "./types/Income";
-import { InsiderRoster, InsiderSummary, InsiderTransactions } from "./types/Insider";
+import {
+  InsiderRoster,
+  InsiderSummary,
+  InsiderTransactions
+} from "./types/Insider";
 import InstitutionalOwnership from "./types/InstitutionalOwnership";
 import IntraDay, { IntradayPrices } from "./types/IntraDay";
 import News from "./types/News";
@@ -21,15 +25,17 @@ import Quote, { CryptoQuote, DelayedQuote } from "./types/Quote";
 import Recent from "./types/Recent";
 import Records from "./types/Records";
 import Search from "./types/Search";
-import DailySentiment, { MinuteSentiment  } from "./types/Sentiment"
+import DailySentiment, {
+  MinuteSentiment,
+  SentimentType
+} from "./types/Sentiment";
 import ShortInterest from "./types/ShortInterest";
 import Splits from "./types/Splits";
 import Stats, { HistoricalStats, StatType } from "./types/Stats";
-import Trades, { LargestTrades } from "./types/Trades"
+import Trades, { LargestTrades } from "./types/Trades";
 import TimeSeries from "./types/TimeSeries";
 import RecommendationTrends from "./types/RecommendationTrends";
-import  Volume, { VolumeByVenue } from "./types/Volume"
-
+import Volume, { VolumeByVenue } from "./types/Volume";
 
 /**
      - Sandbox: set to true for devlopment data
@@ -48,55 +54,61 @@ export type Version = "beta" | "stable" | "v1" | string;
 export type Period = "annual" | "quarterly";
 export type Last = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type OptionSide = "put" | "call";
-export type CryptoCurrency = "btcusd" | "ethusd" | "ltcusd" | "bchusd"  | string
-export type MarketType = "mostactive" | "gainers" | "losers" | "iexvolume" | "iexpercent" | string
+export type CryptoCurrency = "btcusd" | "ethusd" | "ltcusd" | "bchusd" | string;
+export type MarketType =
+  | "mostactive"
+  | "gainers"
+  | "losers"
+  | "iexvolume"
+  | "iexpercent"
+  | string;
 
-  export { 
-    BalanceSheet, 
-    Book, 
-    CashFlow, 
-    CeoCompensation, 
-    Chart, 
-    ChartParams,
-    Company,
-    CryptoQuote,
-    DailySentiment,
-    DelayedQuote,
-    Dividends,
-    DynamicChart,
-    Earnings,
-    Estimates,
-    Financials,
-    Forex,
-    ForexParams,
-    FundOwnership,
-    HistoricalStats,
-    Income,
-    InsiderRoster,
-    InsiderSummary,
-    InsiderTransactions,
-    InstitutionalOwnership,
-    IntraDay,
-    IntradayPrices,
-    LargestTrades,
-    Logo,
-    MinuteSentiment,
-    News,
-    OHLC,
-    PriceTarget,
-    Quote,
-    Range,
-    Recent,
-    Records,
-    RecommendationTrends,
-    ShortInterest,
-    Search,
-    Splits,
-    Stats,
-    StatType,
-    Trades,
-    TimeSeries,
-    Volume,
-    VolumeByVenue,
-  }
-  
+export {
+  BalanceSheet,
+  Book,
+  CashFlow,
+  CeoCompensation,
+  Chart,
+  ChartParams,
+  Company,
+  CryptoQuote,
+  DailySentiment,
+  DelayedQuote,
+  Dividends,
+  DynamicChart,
+  Earnings,
+  Estimates,
+  Financials,
+  Forex,
+  ForexParams,
+  FundOwnership,
+  HistoricalStats,
+  Income,
+  InsiderRoster,
+  InsiderSummary,
+  InsiderTransactions,
+  InstitutionalOwnership,
+  IntraDay,
+  IntradayPrices,
+  LargestTrades,
+  Logo,
+  MinuteSentiment,
+  News,
+  OHLC,
+  PriceTarget,
+  Quote,
+  Range,
+  Recent,
+  Records,
+  RecommendationTrends,
+  ShortInterest,
+  Search,
+  Splits,
+  SentimentType,
+  Stats,
+  StatType,
+  Trades,
+  TimeSeries,
+  Volume,
+  VolumeByVenue
+};

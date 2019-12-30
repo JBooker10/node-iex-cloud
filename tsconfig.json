@@ -5,7 +5,7 @@
     "lib": ["es5", "dom"],
     "allowJs": true,
     "outDir": "./lib",
-    "strict": true,
+    "strict": false,
     "moduleResolution": "node",
     "resolveJsonModule": true
   },

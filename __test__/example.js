@@ -57,3 +57,13 @@ iex
   .symbols("AAPL", "GOOGL")
   .timeSeries()
   .advancedReturnOnCapital();
+
+iex
+  .symbol("AAPL")
+  .quote("lastestPrice")
+  .then(res => console.log(res));
+
+iex
+  .symbol("AAPL")
+  .cashFlow("annual", 3)
+  .then(res => console.log(res));
