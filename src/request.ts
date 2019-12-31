@@ -11,7 +11,7 @@ export default class IEXRequest {
   cryptoCurrency: string;
 
   public constructor(
-    fetchFunc: typeof fetch,
+    fetchFunc: typeof fetch | any,
     { publishable, sandbox = false, version = "beta" }: iex.Configuration
   ) {
     (this.fetchFunc = fetchFunc),

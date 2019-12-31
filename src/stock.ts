@@ -117,7 +117,7 @@ class Stock {
    */
   public cashFlow = (
     period: iex.Period = "quarterly",
-    last: iex.Last
+    last: iex.Last | number
   ): Promise<iex.CashFlow> => {
     return this.req.request(`cash-flow?period=${period}&last=${last}`);
   };
