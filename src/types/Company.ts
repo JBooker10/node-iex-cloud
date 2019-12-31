@@ -1,6 +1,4 @@
 export default interface Company {
-  [key: string]: {
-    company: {
       symbol: string;
       /** Name of the company */
       companyName: string;
@@ -45,10 +43,14 @@ export default interface Company {
       country?: string;
       /** phone number of the company if available */
       phone?: string;
-    };
-  };
 }
 
 export interface Logo {
   url: string;
+}
+
+export interface BatchCompany {
+  [key: string]: {
+    company: Company,
+  }
 }

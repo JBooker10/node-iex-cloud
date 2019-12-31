@@ -39,8 +39,16 @@ export default class IEXCloudClient {
   };
 
   /** Takes in multiple stock symbols, and batches them to a single request  */
-  public symbols = (...symbols: string[]): Stock => {
+  public batchSymbols = (...symbols: string[]): Stock => {
     this.req.datatype = "stock/market/batch";
+    this.req.stockSymbols = symbols;
+    return this.stock;
+  };
+
+   /** Takes in multiple stock symbols, and batches them to a single request  */
+   public symbols = (...symbols: string[]): Stock => {
+    this.req.datatype = "stock/market/batch";
+    console.warn("This method will be deprecated please use batchSymbols to batch multiple stock symbols together")
     this.req.stockSymbols = symbols;
     return this.stock;
   };
@@ -96,3 +104,4 @@ export default class IEXCloudClient {
     return this.req.request(symbol);
   };
 }
+

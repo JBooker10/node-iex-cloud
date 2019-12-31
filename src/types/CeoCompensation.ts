@@ -1,6 +1,4 @@
 export default interface CeoCompensation {
-  [key: string]: {
-    ["ceo-compensation"]: {
       symbol: string;
       /**	CEO name */
       name: string;
@@ -21,6 +19,10 @@ export default interface CeoCompensation {
       total: number;
       /** Fiscal year for the compensation data */
       year: string;
-    };
+}
+
+export interface BatchCeoCompensation {
+  [key: string]: {
+    ["ceo-compensation"]: CeoCompensation
   };
 }

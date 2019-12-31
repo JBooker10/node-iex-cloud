@@ -62,7 +62,7 @@ class Stock {
    * returns book value for a given stock
    * `Data Weight: 1 per quote returned`
    */
-  public book = (): Promise<iex.Book> => {
+  public book = (): Promise<iex.Book | any> => {
     return this.req.request("book");
   };
 

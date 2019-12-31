@@ -56,7 +56,7 @@ test("Estimates", () => {
 
 test("Batch Request and Symbols", () => {
   return iex
-    .symbols("googl, amzn, fb")
+    .batchSymbols("googl, amzn, fb")
     .batch("company", "news", "cash-flow", "logo")
     .then(res => expect(res).toHaveProperty("GOOGL"));
 });

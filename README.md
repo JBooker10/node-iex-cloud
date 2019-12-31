@@ -80,6 +80,14 @@ iex
 ```
 
 ```javascript
+// stock/nflx/dividends
+iex
+  .symbol("nflx")
+  .dividends('1mm')
+  .then(res => console.log(res))
+```
+
+```javascript
 // Query Charts
 iex
   .symbol("googl")

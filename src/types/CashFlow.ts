@@ -37,3 +37,9 @@ export default interface CashFlow {
     }
   ];
 }
+
+export interface BatchCashFlow {
+  [key: string]: {
+    ["cash-flow"]: CashFlow
+  };
+}
