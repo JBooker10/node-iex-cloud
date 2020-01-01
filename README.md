@@ -13,7 +13,7 @@ npm i node-iex-cloud
 ES6+
 
 ```javascript
-import { IEXCloudClient } from "node-iex-cloud";
+import IEXCloudClient from "node-iex-cloud";
 ```
 
 import a promise based HTTP Client to use along side `node-iex-cloud`. Node-iex-cloud supports both `node-fetch` and `axios`
