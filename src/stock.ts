@@ -1,22 +1,22 @@
 import IEXRequest from "./request";
 import Deep from "./deep";
 import * as iex from "./types";
-import DataPoints from "./dataPoints";
 import TimeSeries from "./timeSeries";
 import Forex from "./forex";
+import Batch from "./batch"
 
 class Stock {
   req: IEXRequest;
   iexDeep: Deep;
-  datapoints: DataPoints;
   timeseries: TimeSeries;
   iexForex: Forex;
+  iexBatch: Batch;
   constructor(req: IEXRequest) {
     this.req = req;
     this.iexDeep = new Deep(req);
-    this.datapoints = new DataPoints(req);
     this.timeseries = new TimeSeries(req);
     this.iexForex = new Forex(req);
+    this.iexBatch = new Batch(req);
   }
 
   /** returns balance sheet data. Available quarterly or annually with the default being the last available quarter
@@ -33,19 +33,21 @@ class Stock {
     );
   };
 
+  
+
   /** batch returns multipe data-types for a give stock symbol */
-  public batch = (...params: any): Promise<any> => {
-    return this.req.response(this.req.batchParams, params);
+  // public batch = (...params: any): Promise<any> => {
+  //   return this.req.response(this.req.batchParams, params);
+  // };
+
+   /** batch returns multipe data-types for a give stock symbol */
+   public batch = ():Batch => {
+    return this.iexBatch;
   };
 
   public deep = (): Deep => {
     this.req.datatype = `deep`;
     return this.iexDeep;
-  };
-
-  public dataPoints = (): DataPoints => {
-    this.req.datatype = `data-points`;
-    return this.datapoints;
   };
 
   public timeSeries = (): TimeSeries => {
@@ -62,7 +64,7 @@ class Stock {
    * returns book value for a given stock
    * `Data Weight: 1 per quote returned`
    */
-  public book = (): Promise<iex.Book | any> => {
+  public book = (): Promise<iex.Book> => {
     return this.req.request("book");
   };
 
@@ -123,7 +125,7 @@ class Stock {
   };
 
   /** returns Ceo Compensation */
-  public ceoCompensation = (): Promise<iex.CeoCompensation | any> => {
+  public ceoCompensation = (): Promise<iex.CeoCompensation> => {
     return this.req.request("ceo-compensation");
   };
 

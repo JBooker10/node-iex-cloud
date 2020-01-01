@@ -51,7 +51,7 @@ const iex = new IEXCloudClient(fetch, {
 
 ## Examples
 
-The first method takes in a company symbol (an abbreviation used to uniquely identify publicly traded shares). The subequent method retreive the specfic IEX data type.
+The first method takes in a company symbol (an abbreviation used to uniquely identify publicly traded shares). The subsequent method retreive the specfic IEX data type.
 
 ### Stocks
 
@@ -83,8 +83,8 @@ iex
 // stock/nflx/dividends
 iex
   .symbol("nflx")
-  .dividends('1mm')
-  .then(res => console.log(res))
+  .dividends("1mm")
+  .then(res => console.log(res));
 ```
 
 ```javascript
@@ -273,13 +273,19 @@ iex
 
 ### Batch Types
 
-Use the method `batch` to batch Request of multiple data types, all IEX types are supported. IEX allows only up to `10` types to be made per request.
+Use the method `batch` to batch Request of multiple data types, all IEX types are supported. use the `range` method to return all request IEX allows only up to `10` types to be made per request.
 
 ```javascript
 // stock/googl/batch?types=stock,company,balance-sheet,cash-flow,estimates
 iex
   .symbol("googl")
-  .batch("company", "balance-sheet", "cash-flow", "estimates")
+  .batch()
+  .company()
+  .price()
+  .balanceSheet()
+  .cashFlow()
+  .estimates()
+  .range("1m", 4)
   .then(res => console.log(res));
 ```
 

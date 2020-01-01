@@ -45,7 +45,7 @@ import Volume, { VolumeByVenue } from "./types/Volume";
  */
 export interface Configuration {
   publishable: string;
-  test: string;
+  test?: string;
   sandbox?: boolean;
   version?: Version;
 }

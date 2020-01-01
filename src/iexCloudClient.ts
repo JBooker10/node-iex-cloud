@@ -1,7 +1,9 @@
 import * as iex from "./types";
 import Crypto from "./crypto";
 import Stock from "./stock";
+import Stocks from "./stocks";
 import Market from "./market";
+import Batch from "./batch";
 import ReferenceData from "./reference";
 import DataPoints from "./dataPoints";
 import TimeSeries from "./timeSeries";
@@ -11,46 +13,32 @@ import Forex from "./forex";
 
 export default class IEXCloudClient {
   private req: IEXRequest;
-  private cryptoCurrency: Crypto;
-  private stock: Stock;
-  private stockMarket: Market;
-  private foreignExchange: Forex;
-  private referenceData: ReferenceData;
-  private datapoints: DataPoints;
-  private statistics: Statistics;
-  private timeseries: TimeSeries;
 
   constructor(f: typeof fetch | any, config: iex.Configuration) {
     this.req = new IEXRequest(f.bind(this), config);
-    this.cryptoCurrency = new Crypto(this.req);
-    this.stock = new Stock(this.req);
-    this.stockMarket = new Market(this.req);
-    this.foreignExchange = new Forex(this.req);
-    this.referenceData = new ReferenceData(this.req);
-    this.datapoints = new DataPoints(this.req);
-    this.statistics = new Statistics(this.req);
-    this.timeseries = new TimeSeries(this.req);
   }
 
   /**  Takes in a stock symbol, a unique series of letters assigned to a security   */
   public symbol = (symbol: string): Stock => {
     this.req.stockSymbol = symbol;
-    return this.stock;
+    return new Stock(this.req);
   };
 
   /** Takes in multiple stock symbols, and batches them to a single request  */
-  public batchSymbols = (...symbols: string[]): Stock => {
+  public batchSymbols = (...symbols: string[]): Stocks => {
     this.req.datatype = "stock/market/batch";
     this.req.stockSymbols = symbols;
-    return this.stock;
+    return new Stocks(this.req);
   };
 
-   /** Takes in multiple stock symbols, and batches them to a single request  */
-   public symbols = (...symbols: string[]): Stock => {
+  /** Takes in multiple stock symbols, and batches them to a single request  */
+  public symbols = (...symbols: string[]): Stocks => {
     this.req.datatype = "stock/market/batch";
-    console.warn("This method will be deprecated please use batchSymbols to batch multiple stock symbols together")
+    console.warn(
+      "This method will be deprecated please use batchSymbols to batch multiple stock symbols together"
+    );
     this.req.stockSymbols = symbols;
-    return this.stock;
+    return new Stocks(this.req);
   };
 
   public tops = (): Promise<any> => {
@@ -62,37 +50,37 @@ export default class IEXCloudClient {
   public crypto = (crypto: iex.CryptoCurrency): Crypto => {
     this.req.datatype = "crypto";
     this.req.cryptoCurrency = crypto;
-    return this.cryptoCurrency;
+    return new Crypto(this.req);
   };
 
   public market = (): Market => {
     this.req.datatype = `stock/market`;
-    return this.stockMarket;
+    return new Market(this.req);
   };
 
   public forex = (): Forex => {
     this.req.datatype = `fx`;
-    return this.foreignExchange;
+    return new Forex(this.req);
   };
 
   public refData = (): ReferenceData => {
     this.req.datatype = `ref-data`;
-    return this.referenceData;
+    return new ReferenceData(this.req);
   };
 
   public dataPoints = (): DataPoints => {
     this.req.datatype = `data-points`;
-    return this.datapoints;
+    return new DataPoints(this.req);
   };
 
   public stats = (): Statistics => {
     this.req.datatype = `stats`;
-    return this.statistics;
+    return new Statistics(this.req);
   };
 
   public timeSeries = (): TimeSeries => {
     this.req.datatype = `time-series`;
-    return this.timeseries;
+    return new TimeSeries(this.req);
   };
 
   /**  Returns an array of symbols up to the top 10 matches.
@@ -104,4 +92,3 @@ export default class IEXCloudClient {
     return this.req.request(symbol);
   };
 }
-

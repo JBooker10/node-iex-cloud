@@ -104,9 +104,10 @@ export default class IEXRequest {
     return this.response(this.params, params);
   };
 
-  response = async (req: any, params: any) => {
+  response = async (req: any, params: any, range?: any) => {
     try {
-      const res = await this.fetchFunc(req(params));
+      let n = range ? range : "";
+      const res = await this.fetchFunc(req(params + n));
       if (typeof res.headers.get === "function") {
         const contentType = res.headers.get("content-type");
         if (contentType === "application/json; charset=utf-8") {

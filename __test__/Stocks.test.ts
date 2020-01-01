@@ -43,7 +43,12 @@ test("Ceo Compensation", () => {
 test("Batch Request", () => {
   return iex
     .symbol("googl")
-    .batch("company", "balance-sheet", "cash-flow", "estimates")
+    .batch()
+    .company()
+    .balanceSheet()
+    .cashFlow()
+    .estimates()
+    .range("1m", 4)
     .then(res => expect(res).toHaveProperty("company.symbol"));
 });
 
@@ -76,48 +81,62 @@ test("Crypto currencies quote", () => {
 });
 
 test("Time Series Advanced Dividends", () => {
-  return iex.symbol("AAPL")
-   .timeSeries()
-   .advancedDividends()
-   .then(res => expect(Array.isArray(res)).toBe(true))
+  return iex
+    .symbol("AAPL")
+    .timeSeries()
+    .advancedDividends()
+    .then(res => expect(Array.isArray(res)).toBe(true));
 });
 
 test("Forex Latest", () => {
-  return iex.symbols("USDGPB", "USDJPY")
-   .forex()
-   .latest()
-   .then(res => expect(Array.isArray(res)).toBe(true))
+  return iex
+    .symbols("USDGPB", "USDJPY")
+    .forex()
+    .latest()
+    .then(res => expect(Array.isArray(res)).toBe(true));
 });
 
 test("Forex Historical", () => {
-  return iex.symbols("USDGPB", "USDJPY")
-   .forex()
-   .historical({ last: 5 })
-   .then(res => expect(Array.isArray(res)).toBe(true))
+  return iex
+    .symbols("USDGPB", "USDJPY")
+    .forex()
+    .historical({ last: 5 })
+    .then(res => expect(Array.isArray(res)).toBe(true));
 });
 
 test("Tops", () => {
-  return iex.tops().then(res => expect(Array.isArray(res)).toBe(true))
+  return iex.tops().then(res => expect(Array.isArray(res)).toBe(true));
 });
 
 test("Market Sector Performance", () => {
-  return iex.market().sectorPerformance().then(res => expect(Array.isArray(res)).toBe(true))
+  return iex
+    .market()
+    .sectorPerformance()
+    .then(res => expect(Array.isArray(res)).toBe(true));
 });
 
 test("Reference Data Exchanges", () => {
-  return iex.refData().exchanges().then(res => expect(Array.isArray(res)).toBe(true))
+  return iex
+    .refData()
+    .exchanges()
+    .then(res => expect(Array.isArray(res)).toBe(true));
 });
 
 test("Chart", () => {
   return iex
-  .symbol("aapl")
-  .chart("6m", { chartCloseOnly: true, chartSimplify: true, chartInterval: 2 })
-  .then(res =>  expect(Array.isArray(res)).toBe(true));
+    .symbol("aapl")
+    .chart("6m", {
+      chartCloseOnly: true,
+      chartSimplify: true,
+      chartInterval: 2
+    })
+    .then(res => expect(Array.isArray(res)).toBe(true));
 });
 
-
 test("Search By Company Name", () => {
-iex.search("facebook").then(res => res)
- .then(res => iex.symbol(res[0].symbol).company())
- .then(res =>  expect(res).toHaveProperty("symbol"))
-})
+  iex
+    .search("facebook")
+    .then(res => res)
+    .then(res => iex.symbol(res[0].symbol).company())
+    .then(res => expect(res).toHaveProperty("symbol"));
+});

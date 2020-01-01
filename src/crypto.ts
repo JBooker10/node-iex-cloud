@@ -9,12 +9,6 @@ class Crypto {
         this.req = req
     }
 
-    public crypto = (crypto: iex.CryptoCurrency): IEXRequest => {
-        this.req.datatype = "crypto";
-        this.req.cryptoCurrency = crypto;
-        return this.req;
-      };
-
     public book = (): Promise<any> => {
         return this.req.request("book");
     };
