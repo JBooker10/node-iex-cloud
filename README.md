@@ -276,7 +276,7 @@ iex
 Use the method `batch` to batch Request of multiple data types, all IEX types are supported. use the `range` method to return all request IEX allows only up to `10` types to be made per request.
 
 ```javascript
-// stock/googl/batch?types=stock,company,balance-sheet,cash-flow,estimates
+// stock/googl/batch?types=stock,company,balance-sheet,cash-flow,estimates&range=1m&last=4
 iex
   .symbol("googl")
   .batch()
@@ -292,10 +292,16 @@ iex
 ### Batch Symbols & Types
 
 ```javascript
-// batch?symbols=googl,amzn,fb,aapl&types=company,balance-sheet,cash-flow,estimates
+// batch?symbols=googl,amzn,fb,aapl&types=company,balance-sheet,cash-flow,estimates&range=1m&last=4
 iex
   .symbols("googl,amzn,fb,aapl")
-  .batch("company", "balance-sheet", "cash-flow", "estimates")
+  .batch()
+  .company()
+  .price()
+  .balanceSheet()
+  .cashFlow()
+  .estimates()
+  .range("1m", 4)
   .then(res => console.log(res));
 ```
 
