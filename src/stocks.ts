@@ -1,6 +1,7 @@
 import IEXRequest from "./request";
 import Forex from "./forex";
 import * as iex from "./types";
+import Batch from "./batch";
 
 class Stocks {
   req: IEXRequest;
@@ -14,8 +15,8 @@ class Stocks {
   public balanceSheet = (): Promise<any> => this.req.request(`balance-sheet`);
 
   /** batch returns multipe data-types for a give stock symbol */
-  public batch = (...params: any): Promise<any> => {
-    return this.req.response(this.req.batchParams, params);
+  public batch = (): Batch => {
+    return new Batch(this.req);
   };
 
   public forex = (): Forex => {
