@@ -4,6 +4,13 @@ require("dotenv").config();
 const config = require("./config");
 const iex = new IEXCloudClient(fetch, config);
 
+test("Unknown Symbol", () => {
+  return iex
+    .symbol("UnknownSymbol")
+    .company()
+    .catch(err => expect(err).toMatch("Unknown symbol"));
+});
+
 test("Company", () => {
   return iex
     .symbol("GOOGL")
@@ -133,7 +140,7 @@ test("Chart", () => {
     .chart("6m", {
       chartCloseOnly: true,
       chartSimplify: true,
-      chartInterval: 2
+      chartInterval: 2,
     })
     .then(res => expect(Array.isArray(res)).toBe(true));
 });

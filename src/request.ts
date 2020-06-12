@@ -115,12 +115,12 @@ export default class IEXRequest {
         }
 
         if (res.status >= 400) {
-          throw new Error(await res.text());
+          throw new Error();
         }
       }
       return (<any>res).data;
     } catch (err) {
-      throw new Error(err);
+      return err.response && err.response.data;
     }
   };
 }
