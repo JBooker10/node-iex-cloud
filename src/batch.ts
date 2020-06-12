@@ -210,11 +210,6 @@ class Batch {
     return this;
   };
 
-  public shortInterest = (): Batch => {
-    this.batching = [...this.batching, `shortInterest`];
-    return this;
-  };
-
   /** This returns 15 minute delayed and 30 day average consolidated volume percentage of a stock, by market. This call will always return 13 values, and will be sorted in ascending order by current day trading volume percentage. */
   public volumeByVenue = (): Batch => {
     this.batching = [...this.batching, `volume-by-venue`];

@@ -7,7 +7,7 @@ require("dotenv").config();
 const iex = new IEXCloudClient(axios, {
   sandbox: true,
   publishable: process.env.PUBLISHABLE,
-  version: "stable"
+  version: "stable",
 });
 
 iex
@@ -72,10 +72,7 @@ iex
   .sectorPerformance()
   .then(res => console.log(res));
 
-iex
-  .symbols("AAPL", "GOOGL")
-  .timeSeries()
-  .advancedReturnOnCapital();
+iex.symbols("AAPL", "GOOGL").timeSeries().advancedReturnOnCapital();
 
 iex
   .symbol("AAPL")
