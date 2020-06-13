@@ -14,7 +14,7 @@ import Income from "./types/Income";
 import {
   InsiderRoster,
   InsiderSummary,
-  InsiderTransactions
+  InsiderTransactions,
 } from "./types/Insider";
 import InstitutionalOwnership from "./types/InstitutionalOwnership";
 import IntraDay, { IntradayPrices } from "./types/IntraDay";
@@ -27,7 +27,7 @@ import Records from "./types/Records";
 import Search from "./types/Search";
 import DailySentiment, {
   MinuteSentiment,
-  SentimentType
+  SentimentType,
 } from "./types/Sentiment";
 import ShortInterest from "./types/ShortInterest";
 import Splits from "./types/Splits";
@@ -110,5 +110,5 @@ export {
   Trades,
   TimeSeries,
   Volume,
-  VolumeByVenue
+  VolumeByVenue,
 };

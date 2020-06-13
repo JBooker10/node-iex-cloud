@@ -1,8 +1,26 @@
 import { IEXCloudClient } from "./../lib/index";
 const fetch = require("node-fetch");
+const axios = require("axios");
 require("dotenv").config();
 const config = require("./config");
 const iex = new IEXCloudClient(fetch, config);
+
+test("Error handling on axios", () => {
+  const x = new IEXCloudClient(axios, config);
+  return x
+    .symbol("UnknownSymbol")
+    .company()
+    .catch(err => expect(err).toMatch("Unknown symbol"));
+});
+
+test("Error handling on node-fetch", () => {
+  const x = new IEXCloudClient(fetch, config);
+  return x
+    .symbol("UnknownSymbol")
+    .deep()
+    .book()
+    .catch(err => expect(err).toMatch("Unknown symbol"));
+});
 
 test("Unknown Symbol", () => {
   return iex
