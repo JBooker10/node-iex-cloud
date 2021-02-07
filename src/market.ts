@@ -42,7 +42,7 @@ class Market {
 
     /** Returns an array of quotes for the top 10 symbols in a specified list. */
     public list = (listType: iex.MarketType, { displayPercent, listLimit }: any) => {
-        return this.req.request(`list${listType}`);
+        return this.req.request(`list/${listType}`);
     };
 
 }
