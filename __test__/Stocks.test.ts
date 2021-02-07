@@ -72,16 +72,8 @@ test("Batch Request", () => {
     .company()
     .balanceSheet()
     .cashFlow()
-    .estimates()
     .range("1m", 4)
     .then(res => expect(res).toHaveProperty("company.symbol"));
-});
-
-test("Estimates", () => {
-  return iex
-    .symbol("googl")
-    .estimates()
-    .then(res => expect(res).toHaveProperty("estimates"));
 });
 
 test("Batch Request and Symbols", () => {
@@ -91,7 +83,6 @@ test("Batch Request and Symbols", () => {
     .company()
     .balanceSheet()
     .cashFlow()
-    .estimates()
     .range()
     .then(res => expect(res).toHaveProperty("GOOGL"));
 });

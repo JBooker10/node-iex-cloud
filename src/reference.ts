@@ -1,11 +1,8 @@
 
 import IEXRequest from "./request"
-import * as iex from "./types";
-
 
 class ReferenceData {
-    req: IEXRequest
-    constructor(req: IEXRequest) {
+    constructor(private req: IEXRequest) {
         this.req = req
     }
 
@@ -57,7 +54,6 @@ class ReferenceData {
     public otc = () => {
         return this.req.request("otc/symbols")
     }
-
 
     /** Returns an array of sectors. */
     public sectors = () => {

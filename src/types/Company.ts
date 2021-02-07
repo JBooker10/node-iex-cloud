@@ -1,15 +1,15 @@
-export default interface Company {
-      symbol: string;
+export interface Company {
+      symbol?: string;
       /** Name of the company */
-      companyName: string;
-      exchange: string;
-      industry: string;
-      website: string;
-      description: string;
-      CEO: string;
+      companyName?: string;
+      exchange?: string;
+      industry?: string;
+      website?: string;
+      description?: string;
+      CEO?: string;
       /** Primary SIC Code for the symbol (if available) */
-      primarySicCode: string;
-      securityName: string;
+      primarySicCode?: string;
+      securityName?: string;
       /** refers to the common issue type of the stock.
     ad – American Depository Receipt (ADR’s)
     re – Real Estate Investment Trust (REIT’s)
@@ -23,12 +23,12 @@ export default interface Company {
     (blank) – Not Available, i.e., Note, or (non-filing) Closed Ended Funds
     ut - Unit
     temp - Temporary */
-      issueType: string;
-      sector: string;
+      issueType?: string;
+      sector?: string;
       /** Number of employees */
-      employees: number;
+      employees?: number;
       /** an array of strings used to classify the company. */
-      tags: string[];
+      tags?: string[];
       /** street address of the company if available */
       address?: string;
       /** street address of the company if available */
@@ -46,7 +46,7 @@ export default interface Company {
 }
 
 export interface Logo {
-  url: string;
+  url?: string;
 }
 
 export interface BatchCompany {

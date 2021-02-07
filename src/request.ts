@@ -35,47 +35,40 @@ export default class IEXRequest {
     const operand = params.match(new RegExp("\\?", "g"));
     const q = operand && operand[0] === "?" ? "&" : "?";
     const pk = `token=${this.setToken(this.publishable)}`;
-    const request = `${url}/${this.stockSymbol}/${params}${q}${pk}`;
+    let request = `${url}/${this.stockSymbol}/${params}${q}${pk}`;
 
-    if (this.datatype === "deep") {
-      const request = `${url}/${params}?symbols=${this.stockSymbol}&${pk}`;
-      this.datatype = "stock";
-      this.sandbox;
-      return request;
+    switch (this.datatype) {
+      case "deep":
+        request = `${url}/${params}?symbols=${this.stockSymbol}&${pk}`;
+        this.datatype = "stock";
+        this.sandbox;
+      break;
+      case "stock/market/batch":
+        request = `${url}?symbols=${this.stockSymbols.map(symbol => symbol
+        )}&types=${params}&${pk}`;
+        this.datatype = "stock";
+        this.sandbox;
+      break;
+      case "crypto":
+        request = `${url}/${this.cryptoCurrency}/${params}${q}${pk}`;
+        this.datatype = "stock";
+        this.sandbox;
+      break;
+      case "tops":
+      case "stock/market":
+      case "fx":
+      case "stats":
+      case "search":
+      case "time-series":
+      case "ref-data":
+        request = `${url}/${params}${q}${pk}`;
+        this.datatype = "stock";
+        this.sandbox;
+      break;
+      default:
+        this.sandbox
     }
-
-    if (this.datatype === "stock/market/batch") {
-      const request = `${url}?symbols=${this.stockSymbols.map(
-        symbol => symbol
-      )}&types=${params}&${pk}`;
-      this.datatype = "stock";
-      this.sandbox;
-      return request;
-    }
-
-    if (this.datatype === "crypto") {
-      const request = `${url}/${this.cryptoCurrency}/${params}${q}${pk}`;
-      this.datatype = "stock";
-      this.sandbox;
-      return request;
-    }
-
-    if (
-      this.datatype === "tops" ||
-      this.datatype === "stock/market" ||
-      this.datatype === "fx" ||
-      this.datatype === "stats" ||
-      this.datatype === "search" ||
-      this.datatype === "time-series" ||
-      this.datatype === "ref-data"
-    ) {
-      const request = `${url}/${params}${q}${pk}`;
-      this.datatype = "stock";
-      this.sandbox;
-      return request;
-    }
-
-    this.sandbox;
+    
     return request;
   };
 

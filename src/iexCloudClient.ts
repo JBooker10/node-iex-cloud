@@ -3,7 +3,6 @@ import Crypto from "./crypto";
 import Stock from "./stock";
 import Stocks from "./stocks";
 import Market from "./market";
-import Batch from "./batch";
 import ReferenceData from "./reference";
 import DataPoints from "./dataPoints";
 import TimeSeries from "./timeSeries";

@@ -1,20 +1,20 @@
-export default interface Dividends {
+export interface Dividends {
   /** refers to the dividend ex-date */
-  exDate: Date;
+  exDate?: Date;
   /** refers to the payment date */
-  paymentDate: Date;
+  paymentDate?: Date;
   /** refers to the dividend record date */
-  recordDate: Date;
+  recordDate?: Date;
   /** refers to the dividend declaration date */
-  declaredDate: Date;
+  declaredDate?: Date;
   /**	refers to the payment amount */
-  amount: number;
+  amount?: number;
   /** Type of dividend event */
-  flag: string;
+  flag?: string;
   /** Currency of the dividend */
-  currency: string;
+  currency?: string;
   /** Description of the dividend event */
-  description: string;
+  description?: string;
   /** Frequency of the dividend */
-  frequency: string;
+  frequency?: string;
 }

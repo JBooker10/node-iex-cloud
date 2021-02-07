@@ -4,8 +4,7 @@ import * as iex from "./types";
 import Batch from "./batch";
 
 class Stocks {
-  req: IEXRequest;
-  constructor(req: IEXRequest) {
+  constructor(private req: IEXRequest) {
     this.req = req;
   }
 

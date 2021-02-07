@@ -1,4 +1,4 @@
-export default interface Chart {
+export interface Chart {
   /** Formatted as YYYY-MM-DD */
   date: Date;
   /** Adjusted data for historical dates. Split adjusted only. */

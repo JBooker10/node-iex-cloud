@@ -10,6 +10,11 @@ const iex = new IEXCloudClient(axios, {
   version: "stable",
 });
 
+
+iex.market()
+.list("mostactive", {displayPercent: true, listLimit: 4})
+.then(res => console.log(res))
+
 iex
   .symbols("AAPL", "GOOGL")
   .book()
@@ -82,8 +87,6 @@ iex
   .sectorPerformance()
   .then(res => console.log(res))
   .catch(err => console.log(err));
-
-iex.symbols("AAPL", "GOOGL").timeSeries().advancedReturnOnCapital();
 
 iex
   .symbol("AAPL")

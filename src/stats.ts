@@ -3,10 +3,8 @@
 import IEXRequest from "./request"
 import * as iex from "./types";
 
-
 class Statistics {
-    req: IEXRequest
-    constructor(req: IEXRequest) {
+    constructor(private req: IEXRequest) {
         this.req = req
     }
 
