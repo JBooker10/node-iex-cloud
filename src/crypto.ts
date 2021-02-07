@@ -1,11 +1,10 @@
 
 import IEXRequest from "./request"
-import * as iex from "./types";
+import { CryptoQuote } from "./types";
 
 
 class Crypto {
-    req: IEXRequest
-    constructor(req: IEXRequest) {
+    constructor(private req: IEXRequest) {
         this.req = req
     }
 
@@ -17,7 +16,7 @@ class Crypto {
         return this.req.request("price");
     };
 
-    public quote = (): Promise<iex.CryptoQuote> => {
+    public quote = (): Promise<CryptoQuote> => {
         return this.req.request("quote");
     };
 

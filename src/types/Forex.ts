@@ -1,8 +1,8 @@
-export default interface Forex {
-    date: Date;
-    fromCurrency: string;
-    toCurrency: string;
-    rate: number;
+export interface Forex {
+    date?: Date;
+    fromCurrency?: string;
+    toCurrency?: string;
+    rate?: number;
 }
 
   export interface ForexParams {

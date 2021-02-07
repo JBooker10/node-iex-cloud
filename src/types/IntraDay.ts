@@ -1,4 +1,4 @@
-export default interface IntraDay {
+export interface IntraDay {
     volume: {
       value: number;
       lastUpdated: number;

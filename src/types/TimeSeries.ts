@@ -1,4 +1,4 @@
-export default interface TimeSeries {
+export interface TimeSeries {
     id: string,
     description: string,
     key: string,

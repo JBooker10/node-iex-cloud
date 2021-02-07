@@ -1,9 +1,8 @@
 import IEXRequest from "./request";
 
 class TimeSeries {
-  req: IEXRequest;
   p: string;
-  constructor(req: IEXRequest) {
+  constructor(private req: IEXRequest) {
     this.req = req;
     this.p = "PREMIUM_WALLSTREETHORIZON_";
   }

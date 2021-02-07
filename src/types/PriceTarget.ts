@@ -1,13 +1,13 @@
-export default interface PriceTarget {
-  symbol: number;
+export interface PriceTarget {
+  symbol?: number;
   /** Date of the most recent price target */
-  updatedDate: string;
+  updatedDate?: string;
   /** Average price target */
-  priceTargetAverage: number;
+  priceTargetAverage?: number;
   /**  	Highest price target */
-  priceTargetHigh: number;
+  priceTargetHigh?: number;
   /** Lowest price target */
-  priceTargetLow: number;
+  priceTargetLow?: number;
   /** Number of analysts that provided price targets */
-  numberOfAnalysts: number;
+  numberOfAnalysts?: number;
 }

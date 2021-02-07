@@ -1,16 +1,14 @@
 
 import IEXRequest from "./request"
-import * as iex from "./types";
-
+import { ForexParams } from "./types";
 
 class Forex {
-    req: IEXRequest
-    constructor(req: IEXRequest) {
+    constructor(private req: IEXRequest) {
         this.req = req
     }
 
  /** This endpoint provides an end of day exchange rate of a given currency pair */
-  public rate = (params: iex.ForexParams): Promise<any> => {
+  public rate = (params: ForexParams): Promise<any> => {
     return this.req.request(`rate/${params.from}/${params.to}`);
   };
 

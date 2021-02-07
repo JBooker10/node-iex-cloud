@@ -1,10 +1,9 @@
 import IEXRequest from "./request";
-import * as iex from "./types";
+import { Range, Last } from "./types";
 
 class Batch {
-  req: IEXRequest;
-  batching: string[];
-  constructor(req: IEXRequest) {
+  private batching: string[];
+  constructor(private req: IEXRequest) {
     this.req = req;
     this.batching = [];
   }
@@ -217,7 +216,7 @@ class Batch {
   };
 
   /** return batch requests using the range method */
-  public range = (range?: iex.Range, last?: iex.Last): Promise<any> => {
+  public range = (range?: Range, last?: Last): Promise<any> => {
     return this.req.response(
       this.req.batchParams,
       this.batching,

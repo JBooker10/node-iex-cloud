@@ -1,9 +1,10 @@
 import IEXRequest from "./request";
-import Deep from "./deep";
 import * as iex from "./types";
+import Deep from "./deep";
 import TimeSeries from "./timeSeries";
 import Forex from "./forex";
 import Batch from "./batch"
+
 
 class Stock {
   req: IEXRequest;
@@ -137,16 +138,18 @@ class Stock {
   };
 
   /**
-   *  `Data Weight: 1 per symbol per quote`
+   *  returns the 15 minute delayed market quote.
+   *   `Data Weight: 1 per symbol per quote`
    */
-  public delayedQuote = (): Promise<iex.DelayedQuote> => {
-    return this.req.request("delayed-quote");
+  public delayedQuote = (oddLot?: boolean): Promise<iex.DelayedQuote> => {
+    return this.req.request(`delayed-quote?oddLot=${oddLot}`);
   };
 
   /**
+   * Provides basic dividend data for US equities, ETFs, and Mutual Funds for the last 5 years. For 13+ years of history, comprehensive data, and international dividends, use the Advanced Dividends endpoint.
    * `Data Weight: 10 per symbol per period returned`
    */
-  public dividends = (range: iex.Range): Promise<iex.Dividends[]> => {
+  public dividends = (range: iex.Range | "next"): Promise<iex.Dividends[]> => {
     return this.req.request(`dividends${range ? "/" + range : ""}`);
   };
 

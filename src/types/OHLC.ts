@@ -1,4 +1,4 @@
-export default interface OHLC {
+export interface OHLC {
     /**  	refers to the official open */
     open: {
       /** refers to the official open price. Will return 0 if symbol has no volume for the day. */

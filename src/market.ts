@@ -1,11 +1,9 @@
 
 import IEXRequest from "./request"
-import * as iex from "./types";
-
+import { MarketType } from "./types";
 
 class Market {
-    req: IEXRequest
-    constructor(req: IEXRequest) {
+    constructor(private req: IEXRequest) {
         this.req = req
     }
 
@@ -41,7 +39,7 @@ class Market {
     };
 
     /** Returns an array of quotes for the top 10 symbols in a specified list. */
-    public list = (listType: iex.MarketType, { displayPercent, listLimit }: any) => {
+    public list = (listType: MarketType, { displayPercent, listLimit }: any) => {
         return this.req.request(`list/${listType}`);
     };
 
