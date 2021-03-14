@@ -33,7 +33,25 @@ class Stocks {
    * Returns adjusted and unadjusted historical data for up to 15 years.
    * `Data Weight: 1,000 per symbol per period`
    */
-  public chart = (): Promise<any> => this.req.request(`chart`);
+  public chart = (
+    range?: iex.Range,
+    params?: iex.ChartParams
+  ): Promise<any> => {
+    const paramValues = [];
+    if (range) {
+      paramValues.push(["range", range]);
+    }
+    if (params) {
+      paramValues.push(...Object.entries(params));
+    }
+    return this.req.request(
+      `chart${
+        paramValues.length > 0
+          ? "&" + paramValues.map((v: string[]) => `${v[0]}=${v[1]}`).join("&")
+          : ""
+      }`
+    );
+  };
 
   /**
    * returns cash flow data. Available quarterly or annually, with the default being the last available quarter.

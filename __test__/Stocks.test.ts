@@ -94,6 +94,13 @@ test("Batch Symbols Ceo Compensation", () => {
     .then(res => expect(res).toHaveProperty("GOOGL"));
 });
 
+test("Batch Symbols Chart with params", () => {
+  return iex
+    .batchSymbols("aapl,amzn,fb")
+    .chart("5d", { chartCloseOnly: true })
+    .then(res => expect(res).toHaveProperty("AAPL"));
+});
+
 test("Crypto currencies quote", () => {
   return iex
     .crypto("btcusd")
