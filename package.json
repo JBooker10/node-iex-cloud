@@ -1,6 +1,6 @@
 {
   "name": "node-iex-cloud",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "SDK for iex cloud",
   "main": "lib/index.js",
   "scripts": {
